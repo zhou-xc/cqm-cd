@@ -2,7 +2,7 @@
 
 ## 目前还缺的环节
 
-当前文件是源码，不含已构建的 IPA。Windows 本机没有 Apple 的 iOS SDK/Xcode；需要 macOS 构建环境。现有工程提供 GitHub Actions 的 macOS 构建配置，不需要在构建阶段提供 Apple ID 或证书。
+源码 ZIP 不含 IPA；已生成的 IPA 在仓库 [Actions](https://github.com/zhou-xc/cqm-cd/actions/workflows/ios.yml) 的成功构建工件中，名称为 `MetroMinutes-portable-unsigned`。它已经编译，但仍需有效签名后安装。Windows 本机没有 Apple 的 iOS SDK/Xcode；后续重新构建使用已配置的 macOS runner，不需要在构建阶段提供 Apple ID 或证书。
 
 ## 1. 在 GitHub 构建
 
@@ -30,6 +30,8 @@
 2. 长按主屏幕空白处 → 编辑 → 添加小组件 → 搜索“到站”。
 3. `shared` 默认跟随应用；`portable` 需长按小组件 → 编辑小组件 → 设置站点、方向与外观。方向一/二对应应用中从左至右的两个方向；应用里会根据返回班次显示具体目的地。
 4. 小组件右上角 ↻ 刷新；站名打开应用。两位分钟模式可能被系统延迟，连续分秒模式可在显示方式中选择。
+
+云端模拟器访问到站服务器曾遇到连接被重置，本机同一接口正常。手机首次打开请允许联网，再实际刷新验证。当前没有真机查询成功的验证结果；如出现错误，可提供界面错误文字继续排查。
 
 ## 有 Mac 时
 
