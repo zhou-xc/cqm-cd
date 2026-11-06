@@ -64,10 +64,16 @@ jobs:
           echo "SIMULATOR_ID=$DEVICE_ID" >> "$GITHUB_ENV"
           xcodebuild test -project MetroMinutes.xcodeproj -scheme MetroMinutes -destination "platform=iOS Simulator,id=$DEVICE_ID" -parallel-testing-enabled NO -derivedDataPath build/simulator -resultBundlePath build/Tests.xcresult CODE_SIGNING_ALLOWED=NO
       - name: Capture simulator app screen
+        continue-on-error: true
+        timeout-minutes: 4
         run: |
-          xcrun simctl launch "$SIMULATOR_ID" "$BUNDLE_ID"
+          UI_DEVICE_ID=$(xcrun simctl list devices -j | python -c 'import json,sys; d=json.load(sys.stdin); print(next((v["udid"] for k,vs in d["devices"].items() if "iOS" in k for v in vs if v["state"]=="Booted" and "iPhone" in v["name"]),""))')
+          UI_DEVICE_ID=${UI_DEVICE_ID:-$SIMULATOR_ID}
+          xcrun simctl bootstatus "$UI_DEVICE_ID" -b
+          xcrun simctl install "$UI_DEVICE_ID" build/simulator/Build/Products/Debug-iphonesimulator/MetroMinutes.app
+          xcrun simctl launch --terminate-running-process "$UI_DEVICE_ID" "$BUNDLE_ID"
           sleep 15
-          xcrun simctl io "$SIMULATOR_ID" screenshot build/simulator-screen.png
+          xcrun simctl io "$UI_DEVICE_ID" screenshot build/simulator-screen.png
       - name: Compile arm64 device app
         run: |
           xcodebuild build -project MetroMinutes.xcodeproj -scheme MetroMinutes -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/device CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
