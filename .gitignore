@@ -1,0 +1,13 @@
+build/
+*.xcodeproj/
+*.xcworkspace/
+.DS_Store
+*.p12
+*.mobileprovision
+*.ipa
+*.xcarchive/
+.env
+project.generated.json
+.python/
+Config/*-Info.plist
+Config/*.entitlements

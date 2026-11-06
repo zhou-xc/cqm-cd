@@ -1,0 +1,9 @@
+{
+  "body": "{\"city_id\":\"5000\",\"service_id\":\"01\",\"station_no\":\"5032\"}",
+  "nonce": "00112233445566778899aabbccddeeff00",
+  "sequence": "2026110614511234567890",
+  "timestamp": "1793947860000",
+  "digest": "D833AFB83493F2AAE5478BB134FC165FAD9FE19E6A7D2EC5D8ACCD7DB489A1C6",
+  "plaintext": "{\"success\":true,\"result\":{\"ok\":1}}",
+  "encrypted": "478862464c25255f212ecd29e1b58ac79b9014bca699939951d20fd71d2ebf9012abf5f17b9620b920634445d46d977e"
+}

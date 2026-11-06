@@ -1,0 +1,2626 @@
+[
+  {
+    "stationID": "0125",
+    "stationName": "璧山",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0124",
+    "stationName": "尖顶坡",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0123",
+    "stationName": "大学城",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0122",
+    "stationName": "陈家桥",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0121",
+    "stationName": "微电园",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0120",
+    "stationName": "赖家桥",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0119",
+    "stationName": "双碑",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0118",
+    "stationName": "石井坡",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0117",
+    "stationName": "磁器口",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0116",
+    "stationName": "烈士墓",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0115",
+    "stationName": "杨公桥",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0114",
+    "stationName": "沙坪坝",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0113",
+    "stationName": "小龙坎",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0112",
+    "stationName": "马家岩",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0111",
+    "stationName": "高庙村",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0110",
+    "stationName": "石桥铺",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0109",
+    "stationName": "歇台子",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0108",
+    "stationName": "石油路",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0107",
+    "stationName": "大坪",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0106",
+    "stationName": "鹅岭",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0105",
+    "stationName": "两路口",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0104",
+    "stationName": "七星岗",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0103",
+    "stationName": "较场口",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0102",
+    "stationName": "小什字",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0101",
+    "stationName": "朝天门",
+    "lineID": "01",
+    "lineName": "1号线",
+    "upLabel": "往朝天门",
+    "downLabel": "往璧山"
+  },
+  {
+    "stationID": "0225",
+    "stationName": "鱼洞",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0224",
+    "stationName": "大江",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0223",
+    "stationName": "白居寺",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0222",
+    "stationName": "刘家坝",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0221",
+    "stationName": "金家湾",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0220",
+    "stationName": "建桥",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0219",
+    "stationName": "天堂堡",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0218",
+    "stationName": "新山村",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0217",
+    "stationName": "大渡口",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0216",
+    "stationName": "平安",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0215",
+    "stationName": "马王场",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0214",
+    "stationName": "大堰村",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0213",
+    "stationName": "动物园",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0212",
+    "stationName": "杨家坪",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0211",
+    "stationName": "谢家湾",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0210",
+    "stationName": "袁家岗",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0209",
+    "stationName": "大坪",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0208",
+    "stationName": "佛图关",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0207",
+    "stationName": "李子坝",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0206",
+    "stationName": "牛角沱",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0205",
+    "stationName": "曾家岩",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0204",
+    "stationName": "大溪沟",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0203",
+    "stationName": "黄花园",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0202",
+    "stationName": "临江门",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0201",
+    "stationName": "较场口",
+    "lineID": "02",
+    "lineName": "2号线",
+    "upLabel": "往较场口",
+    "downLabel": "往鱼洞"
+  },
+  {
+    "stationID": "0339",
+    "stationName": "江北机场T2航站楼",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0338",
+    "stationName": "碧津",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0337",
+    "stationName": "双龙",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0336",
+    "stationName": "回兴",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0335",
+    "stationName": "长福路",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0334",
+    "stationName": "翠云",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0333",
+    "stationName": "园博园",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0332",
+    "stationName": "鸳鸯",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0331",
+    "stationName": "金童路",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0330",
+    "stationName": "金渝",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0329",
+    "stationName": "童家院子",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0328",
+    "stationName": "龙头寺",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0327",
+    "stationName": "重庆北站南广场",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0326",
+    "stationName": "狮子坪",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0325",
+    "stationName": "唐家院子",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0324",
+    "stationName": "郑家院子",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0323",
+    "stationName": "嘉州路",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0322",
+    "stationName": "红旗河沟",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0321",
+    "stationName": "观音桥",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0320",
+    "stationName": "华新街",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0319",
+    "stationName": "牛角沱",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0318",
+    "stationName": "两路口",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0317",
+    "stationName": "铜元局",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0316",
+    "stationName": "工贸",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0315",
+    "stationName": "南坪",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0314",
+    "stationName": "四公里",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0313",
+    "stationName": "重庆工商大学",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0312",
+    "stationName": "六公里",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0311",
+    "stationName": "重庆交通大学",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0310",
+    "stationName": "八公里",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0309",
+    "stationName": "麒龙",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0308",
+    "stationName": "九公里",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0307",
+    "stationName": "岔路口",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0306",
+    "stationName": "花溪",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0305",
+    "stationName": "大山村",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0304",
+    "stationName": "学堂湾",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0303",
+    "stationName": "鱼胡路",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0302",
+    "stationName": "金竹",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0301",
+    "stationName": "鱼洞",
+    "lineID": "03",
+    "lineName": "3号线",
+    "upLabel": "往鱼洞",
+    "downLabel": "往江北机场T2航站楼"
+  },
+  {
+    "stationID": "0424",
+    "stationName": "黄岭",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0423",
+    "stationName": "石船",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0422",
+    "stationName": "桐梓林",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0421",
+    "stationName": "普福",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0420",
+    "stationName": "高石塔",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0419",
+    "stationName": "龙兴",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0418",
+    "stationName": "龙驿大道",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0417",
+    "stationName": "三板溪",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0416",
+    "stationName": "复盛",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0415",
+    "stationName": "石河清",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0414",
+    "stationName": "雁坪",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0413",
+    "stationName": "鱼嘴",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0412",
+    "stationName": "果园物流枢纽",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0411",
+    "stationName": "鹿栖",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0410",
+    "stationName": "铁山坪",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0409",
+    "stationName": "唐家沱",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0408",
+    "stationName": "太平冲",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0407",
+    "stationName": "港城",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0406",
+    "stationName": "黑石子",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0405",
+    "stationName": "寸滩",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0404",
+    "stationName": "保税港",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0403",
+    "stationName": "头塘",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0402",
+    "stationName": "重庆北站北广场",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0401",
+    "stationName": "民安大道",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0425",
+    "stationName": "嘉州路",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0426",
+    "stationName": "龙溪",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0427",
+    "stationName": "花卉园",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0428",
+    "stationName": "大庆村",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0429",
+    "stationName": "大石坝",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0430",
+    "stationName": "盘溪",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0431",
+    "stationName": "玉带山",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0432",
+    "stationName": "石马河立交",
+    "lineID": "04",
+    "lineName": "4号线",
+    "upLabel": "往石马河立交",
+    "downLabel": "往黄岭"
+  },
+  {
+    "stationID": "0525",
+    "stationName": "跳磴",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0524",
+    "stationName": "华岩中心",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0523",
+    "stationName": "金建路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0522",
+    "stationName": "中梁山",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0521",
+    "stationName": "半山",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0520",
+    "stationName": "华成路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0519",
+    "stationName": "华岩寺",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0518",
+    "stationName": "重庆西站",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0517",
+    "stationName": "凤西路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0516",
+    "stationName": "巴山",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0515",
+    "stationName": "石新路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0514",
+    "stationName": "石桥铺",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0513",
+    "stationName": "歇台子",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0512",
+    "stationName": "红岩村",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0511",
+    "stationName": "忠恕沱",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0510",
+    "stationName": "大石坝",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0509",
+    "stationName": "大龙山",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0508",
+    "stationName": "冉家坝",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0507",
+    "stationName": "幸福广场",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0506",
+    "stationName": "人和",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0505",
+    "stationName": "和睦路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0504",
+    "stationName": "重光",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0503",
+    "stationName": "湖霞街",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0502",
+    "stationName": "丹鹤",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0501",
+    "stationName": "园博中心",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0526",
+    "stationName": "玉河沟",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0527",
+    "stationName": "甘悦大道",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0528",
+    "stationName": "鲁家沟",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0529",
+    "stationName": "中央公园西",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0530",
+    "stationName": "椿萱大道",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0531",
+    "stationName": "悦港大道",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0532",
+    "stationName": "悦港北路",
+    "lineID": "05001",
+    "lineName": "5号线",
+    "upLabel": "往悦港北路",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "0628",
+    "stationName": "北碚",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0627",
+    "stationName": "西南大学",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0626",
+    "stationName": "状元碑",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0625",
+    "stationName": "龙凤溪",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0624",
+    "stationName": "向家岗",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0623",
+    "stationName": "蔡家",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0622",
+    "stationName": "曹家湾",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0621",
+    "stationName": "金山寺",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0620",
+    "stationName": "礼嘉",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0619",
+    "stationName": "九曲河",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0618",
+    "stationName": "康庄",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0617",
+    "stationName": "大竹林",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0616",
+    "stationName": "光电园",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0615",
+    "stationName": "冉家坝",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0614",
+    "stationName": "大龙山",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0613",
+    "stationName": "花卉园",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0612",
+    "stationName": "红旗河沟",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0611",
+    "stationName": "黄泥塝",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0610",
+    "stationName": "红土地",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0609",
+    "stationName": "五里店",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0608",
+    "stationName": "江北城",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0607",
+    "stationName": "大剧院",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0606",
+    "stationName": "小什字",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0605",
+    "stationName": "上新街",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0604",
+    "stationName": "刘家坪",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0603",
+    "stationName": "长生桥",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0602",
+    "stationName": "邱家湾",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0601",
+    "stationName": "茶园",
+    "lineID": "06",
+    "lineName": "6号线",
+    "upLabel": "往茶园",
+    "downLabel": "往北碚"
+  },
+  {
+    "stationID": "0604",
+    "stationName": "刘家坪",
+    "lineID": "061",
+    "lineName": "6号线东站段",
+    "upLabel": "往重庆东站",
+    "downLabel": "往百乐园"
+  },
+  {
+    "stationID": "0629",
+    "stationName": "百乐园",
+    "lineID": "061",
+    "lineName": "6号线东站段",
+    "upLabel": "往重庆东站",
+    "downLabel": "往百乐园"
+  },
+  {
+    "stationID": "0630",
+    "stationName": "桃花桥",
+    "lineID": "061",
+    "lineName": "6号线东站段",
+    "upLabel": "往重庆东站",
+    "downLabel": "往百乐园"
+  },
+  {
+    "stationID": "0631",
+    "stationName": "重庆东站",
+    "lineID": "061",
+    "lineName": "6号线东站段",
+    "upLabel": "往重庆东站",
+    "downLabel": "往百乐园"
+  },
+  {
+    "stationID": "0931",
+    "stationName": "花石沟",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0930",
+    "stationName": "丛岩寺",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0929",
+    "stationName": "中央公园东",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0928",
+    "stationName": "兰桂大道",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0927",
+    "stationName": "春华大道",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0926",
+    "stationName": "兴科大道",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0925",
+    "stationName": "宝圣湖",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0924",
+    "stationName": "青岗坪",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0923",
+    "stationName": "上湾路",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0922",
+    "stationName": "石盘河",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0921",
+    "stationName": "何家梁",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0920",
+    "stationName": "邮轮母港",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0919",
+    "stationName": "保税港",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0918",
+    "stationName": "头塘",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0917",
+    "stationName": "溉澜溪",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0916",
+    "stationName": "五里店",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0915",
+    "stationName": "江北城",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0914",
+    "stationName": "刘家台",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0913",
+    "stationName": "鲤鱼池",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0912",
+    "stationName": "观音桥",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0911",
+    "stationName": "蚂蝗梁",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0910",
+    "stationName": "李家坪",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0909",
+    "stationName": "化龙桥",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0908",
+    "stationName": "富华路",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0907",
+    "stationName": "红岩村",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0906",
+    "stationName": "土湾",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0905",
+    "stationName": "小龙坎",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0904",
+    "stationName": "沙坪坝",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0903",
+    "stationName": "天梨路",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "0902",
+    "stationName": "高滩岩",
+    "lineID": "09",
+    "lineName": "9号线",
+    "upLabel": "往高滩岩",
+    "downLabel": "往兴科大道"
+  },
+  {
+    "stationID": "1027",
+    "stationName": "王家庄",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1026",
+    "stationName": "悦来",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1025",
+    "stationName": "中央公园西",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1024",
+    "stationName": "中央公园",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1023",
+    "stationName": "中央公园东",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1022",
+    "stationName": "鹿山",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1021",
+    "stationName": "渝北广场",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1020",
+    "stationName": "江北机场T2航站楼",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1019",
+    "stationName": "江北机场T3航站楼",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1018",
+    "stationName": "长河",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1017",
+    "stationName": "环山公园",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1016",
+    "stationName": "上湾路",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1015",
+    "stationName": "三亚湾",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1014",
+    "stationName": "民心佳园",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1013",
+    "stationName": "重庆北站北广场",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1012",
+    "stationName": "重庆北站南广场",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1011",
+    "stationName": "龙头寺公园",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1010",
+    "stationName": "红土地",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1009",
+    "stationName": "鲤鱼池",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1008",
+    "stationName": "曾家岩",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1007",
+    "stationName": "大礼堂",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1006",
+    "stationName": "七星岗",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1005",
+    "stationName": "后堡",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1003",
+    "stationName": "万寿路",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1002",
+    "stationName": "南湖",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "1001",
+    "stationName": "兰花路",
+    "lineID": "10",
+    "lineName": "10号线",
+    "upLabel": "往兰花路",
+    "downLabel": "往王家庄"
+  },
+  {
+    "stationID": "5001",
+    "stationName": "重庆西站",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5002",
+    "stationName": "上桥",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5003",
+    "stationName": "凤鸣山",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5004",
+    "stationName": "重庆图书馆",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5005",
+    "stationName": "天星桥",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5006",
+    "stationName": "沙坪坝",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5007",
+    "stationName": "重庆大学",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5008",
+    "stationName": "玉带山",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5009",
+    "stationName": "南桥寺",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5010",
+    "stationName": "体育公园",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5011",
+    "stationName": "冉家坝",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5012",
+    "stationName": "动步公园",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5013",
+    "stationName": "洪湖东路",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5014",
+    "stationName": "民安大道",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5015",
+    "stationName": "重庆北站南广场",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5016",
+    "stationName": "渝鲁",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5017",
+    "stationName": "五里店",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5018",
+    "stationName": "弹子石",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5019",
+    "stationName": "涂山",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5020",
+    "stationName": "仁济",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5021",
+    "stationName": "上新街",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5022",
+    "stationName": "上浩",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5023",
+    "stationName": "海棠溪",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5024",
+    "stationName": "罗家坝",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5025",
+    "stationName": "四公里",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5026",
+    "stationName": "南湖",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5027",
+    "stationName": "海峡路",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5028",
+    "stationName": "谢家湾",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5029",
+    "stationName": "奥体中心",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5030",
+    "stationName": "陈家坪",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5031",
+    "stationName": "彩云湖",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5032",
+    "stationName": "二郎",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "5033",
+    "stationName": "华龙",
+    "lineID": "50",
+    "lineName": "环线",
+    "upLabel": "方向一",
+    "downLabel": "方向二"
+  },
+  {
+    "stationID": "1819",
+    "stationName": "富华路",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1818",
+    "stationName": "歇台子",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1817",
+    "stationName": "奥体中心",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1816",
+    "stationName": "石坪桥",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1815",
+    "stationName": "杨家坪",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1814",
+    "stationName": "滩子口",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1813",
+    "stationName": "黄桷坪",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1812",
+    "stationName": "四川美术学院",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1811",
+    "stationName": "电厂",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1810",
+    "stationName": "李家沱大桥",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1809",
+    "stationName": "重庆理工大学",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1808",
+    "stationName": "花溪工业园",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1807",
+    "stationName": "巴滨路湿地公园",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1806",
+    "stationName": "茄子溪",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1805",
+    "stationName": "白居寺",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1804",
+    "stationName": "伏牛溪",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1803",
+    "stationName": "金鳌山",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1802",
+    "stationName": "跳磴",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "1801",
+    "stationName": "跳磴南",
+    "lineID": "18",
+    "lineName": "18号线",
+    "upLabel": "往跳磴南",
+    "downLabel": "往富华路"
+  },
+  {
+    "stationID": "0345",
+    "stationName": "举人坝",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0344",
+    "stationName": "莲花",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0343",
+    "stationName": "观月路",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0342",
+    "stationName": "高堡湖",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0341",
+    "stationName": "空港广场",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0340",
+    "stationName": "双凤桥",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "0338",
+    "stationName": "碧津",
+    "lineID": "03s",
+    "lineName": "空港线",
+    "upLabel": "往碧津",
+    "downLabel": "往举人坝"
+  },
+  {
+    "stationID": "5613",
+    "stationName": "沙河坝",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5612",
+    "stationName": "红岩坪",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5611",
+    "stationName": "复兴",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5610",
+    "stationName": "思源",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5609",
+    "stationName": "刘家院子",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5608",
+    "stationName": "清溪河",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5607",
+    "stationName": "王家庄",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5606",
+    "stationName": "悦来",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5605",
+    "stationName": "国博中心",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5604",
+    "stationName": "高义口",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5603",
+    "stationName": "黄茅坪",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5602",
+    "stationName": "欢乐谷",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5601",
+    "stationName": "礼嘉",
+    "lineID": "56",
+    "lineName": "国博线",
+    "upLabel": "往礼嘉",
+    "downLabel": "往沙河坝"
+  },
+  {
+    "stationID": "5101",
+    "stationName": "跳磴",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5102",
+    "stationName": "石林寺",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5103",
+    "stationName": "九龙园",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5104",
+    "stationName": "双福",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5105",
+    "stationName": "享堂",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5106",
+    "stationName": "江津高铁",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "5107",
+    "stationName": "圣泉寺",
+    "lineID": "51",
+    "lineName": "江跳线",
+    "upLabel": "往圣泉寺",
+    "downLabel": "往跳磴"
+  },
+  {
+    "stationID": "7201",
+    "stationName": "铜梁西",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7202",
+    "stationName": "铜梁龙城天街",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7203",
+    "stationName": "科创新城",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7204",
+    "stationName": "庆隆",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7205",
+    "stationName": "大路",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7207",
+    "stationName": "河边",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7208",
+    "stationName": "璧城",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  },
+  {
+    "stationID": "7209",
+    "stationName": "璧山",
+    "lineID": "72",
+    "lineName": "璧铜线",
+    "upLabel": "往璧山",
+    "downLabel": "往铜梁西"
+  }
+]

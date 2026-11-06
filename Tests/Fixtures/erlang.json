@@ -1,0 +1,57 @@
+{
+  "receivedAt": "2026-11-06T06:39:54.428Z",
+  "success": true,
+  "errcode": "0000",
+  "errmsg": "成功",
+  "result": {
+    "lines": [
+      {
+        "line_no": "50",
+        "line_name": "环线",
+        "line_theme_color": "#F6A800",
+        "up": [
+          {
+            "arrival_time_min": 1,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "上桥",
+            "arrival_time": "20261106144146",
+            "departure_time": "20261106144216",
+            "skip_stop_flag": 1,
+            "station_no": "5032",
+            "station_name": "二郎",
+            "terminal_station_no": "5002",
+            "terminal_station_name": "上桥"
+          },
+          {
+            "arrival_time_min": 4,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "上桥",
+            "arrival_time": "20261106144431",
+            "departure_time": "20261106144506",
+            "skip_stop_flag": 1,
+            "station_no": "5032",
+            "station_name": "二郎",
+            "terminal_station_no": "5002",
+            "terminal_station_name": "上桥"
+          },
+          {
+            "arrival_time_min": 9,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "上桥",
+            "arrival_time": "20261106144935",
+            "departure_time": "20261106145015",
+            "skip_stop_flag": 1,
+            "station_no": "5032",
+            "station_name": "二郎",
+            "terminal_station_no": "5002",
+            "terminal_station_name": "上桥"
+          }
+        ],
+        "down": []
+      }
+    ]
+  }
+}

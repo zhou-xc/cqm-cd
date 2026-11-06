@@ -1,0 +1,76 @@
+name: Build iPhone app
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'App/**'
+      - 'Widget/**'
+      - 'Shared/**'
+      - 'Tests/**'
+      - 'Resources/**'
+      - 'tools/configure.py'
+      - 'project.yml'
+      - '.github/workflows/ios.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'shared: app/widget settings sync (requires App Groups signing); portable: separate widget settings'
+        type: choice
+        options: [portable, shared]
+        default: portable
+      bundle_id:
+        description: 'Unique reverse-DNS app identifier'
+        type: string
+        default: cn.zhouxc.cqmcd
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      BUILD_MODE: ${{ inputs.mode || 'portable' }}
+      BUNDLE_ID: ${{ inputs.bundle_id || 'cn.zhouxc.cqmcd' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare tools and project
+        run: |
+          brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+          python -m pip install PyYAML==6.0.2
+          python tools/configure.py --mode "$BUILD_MODE" --bundle-id "$BUNDLE_ID"
+          xcodegen generate --spec project.generated.json
+          xcodebuild -version
+      - name: Run iOS simulator tests
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | python -c 'import json,sys; d=json.load(sys.stdin); print(next(v["udid"] for k,vs in d["devices"].items() if "iOS" in k for v in vs if "iPhone" in v["name"]))')
+          xcodebuild test -project MetroMinutes.xcodeproj -scheme MetroMinutes -destination "platform=iOS Simulator,id=$DEVICE_ID" -parallel-testing-enabled NO -resultBundlePath build/Tests.xcresult CODE_SIGNING_ALLOWED=NO
+      - name: Compile arm64 device app
+        run: |
+          xcodebuild build -project MetroMinutes.xcodeproj -scheme MetroMinutes -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/device CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p build/package/Payload
+          cp -R build/device/Build/Products/Release-iphoneos/MetroMinutes.app build/package/Payload/
+          test -d build/package/Payload/MetroMinutes.app/PlugIns/MetroMinutesWidget.appex
+          cd build/package
+          ditto -c -k --sequesterRsrc --keepParent Payload "../MetroMinutes-$BUILD_MODE-UNSIGNED.ipa"
+      - name: Upload IPA and signing instructions
+        uses: actions/upload-artifact@v4
+        with:
+          name: MetroMinutes-${{ env.BUILD_MODE }}-unsigned
+          path: |
+            build/*-UNSIGNED.ipa
+            INSTALL.md
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-test-report
+          path: build/Tests.xcresult
+          if-no-files-found: ignore
+          retention-days: 7
