@@ -44,7 +44,8 @@
 - `Tests/` 的 4 项 XCTest 已通过：真实响应解码、跳站/重复过滤、方向隔离与缓存过期、密码学参考向量。它们验证数据处理和协议实现，不代表真实网络请求已在手机上验证。
 - 云端 runner 对到站服务器的原生 URLSession 和 curl 请求均被重置连接，TLS 1.2 对照也失败。本机同时验证 TLS 1.2/1.3 和实际接口正常。故云端无法完成真实到站请求的端到端验收，需在安装后的手机网络上确认；没有关闭 HTTPS 或证书验证。
 - IPA 内主应用与 Widget 各包含完整站点目录。签名工具是否正确保留 Widget、手机上的刷新节奏与共享设置，仍需真机验收。
-- `Preview/` 是布局示意，使用明确标注的示例数据。构建工件中的 `simulator-screen.png`（若生成成功）是原生 App 模拟器截图，云端无法联网时会显示查询失败状态。
+- `Preview/index.html` 和 `Preview/preview.png` 是布局示意，使用明确标注的示例数据。构建工件中的 `simulator-screen.png` 是原生 App 模拟器截图，已检查布局；云端无法联网时显示查询失败状态。
+- [最终构建记录](https://github.com/zhou-xc/cqm-cd/actions/runs/42181726107)：测试、原生截图、arm64 编译和 IPA 打包全部成功；包内两个可执行文件均验证为 iOS arm64，设备类型为 iPhone，最低 iOS 17。
 
 ## 文件
 
