@@ -9,6 +9,7 @@ on:
       - 'Tests/**'
       - 'Resources/**'
       - 'tools/configure.py'
+      - 'tools/NetworkProbe.swift'
       - 'project.yml'
       - '.github/workflows/ios.yml'
   workflow_dispatch:
@@ -43,10 +44,30 @@ jobs:
           python tools/configure.py --mode "$BUILD_MODE" --bundle-id "$BUNDLE_ID"
           xcodegen generate --spec project.generated.json
           xcodebuild -version
+      - name: Check live endpoint connectivity
+        run: |
+          mkdir -p build
+          swiftc -parse-as-library tools/NetworkProbe.swift -o build/network-probe
+          build/network-probe | tee build/network-probe.txt
+          curl --connect-timeout 10 --max-time 20 -sS -o /dev/null -w 'CURL DEFAULT: HTTP %{http_code}\n' https://ycx.cqmetro.cn/app-h5/msx-metro-pis/ >> build/network-probe.txt 2>&1 || true
+          curl --connect-timeout 10 --max-time 20 --tlsv1.2 --tls-max 1.2 -sS -o /dev/null -w 'CURL TLS1.2: HTTP %{http_code}\n' https://ycx.cqmetro.cn/app-h5/msx-metro-pis/ >> build/network-probe.txt 2>&1 || true
+          cat build/network-probe.txt
+      - name: Upload connectivity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: connectivity-report
+          path: build/network-probe.txt
+          retention-days: 7
       - name: Run iOS simulator tests
         run: |
           DEVICE_ID=$(xcrun simctl list devices available -j | python -c 'import json,sys; d=json.load(sys.stdin); print(next(v["udid"] for k,vs in d["devices"].items() if "iOS" in k for v in vs if "iPhone" in v["name"]))')
-          xcodebuild test -project MetroMinutes.xcodeproj -scheme MetroMinutes -destination "platform=iOS Simulator,id=$DEVICE_ID" -parallel-testing-enabled NO -resultBundlePath build/Tests.xcresult CODE_SIGNING_ALLOWED=NO
+          echo "SIMULATOR_ID=$DEVICE_ID" >> "$GITHUB_ENV"
+          xcodebuild test -project MetroMinutes.xcodeproj -scheme MetroMinutes -destination "platform=iOS Simulator,id=$DEVICE_ID" -parallel-testing-enabled NO -derivedDataPath build/simulator -resultBundlePath build/Tests.xcresult CODE_SIGNING_ALLOWED=NO
+      - name: Capture simulator app screen
+        run: |
+          xcrun simctl launch "$SIMULATOR_ID" "$BUNDLE_ID"
+          sleep 15
+          xcrun simctl io "$SIMULATOR_ID" screenshot build/simulator-screen.png
       - name: Compile arm64 device app
         run: |
           xcodebuild build -project MetroMinutes.xcodeproj -scheme MetroMinutes -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/device CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
@@ -63,6 +84,8 @@ jobs:
           name: MetroMinutes-${{ env.BUILD_MODE }}-unsigned
           path: |
             build/*-UNSIGNED.ipa
+            build/simulator-screen.png
+            build/network-probe.txt
             INSTALL.md
           if-no-files-found: error
           retention-days: 14
