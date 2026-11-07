@@ -2,6 +2,15 @@
 
 此分支新增可直接导入 Scripting 的脚本，目录为 [`MetroMinutes`](./MetroMinutes)。原仓库的原生 iOS 项目保留。
 
+## 1.0.1 修复
+
+- 修复内容区域为黑色、上下露出白底的问题：背景容器扩展到组件可用宽高，内容单独保留 14pt 内边距；浅色外观同样适用。
+- `Dialog` 使用全局对象；方向 Picker 使用字符串回调并校验 `up` / `down`，修复 App 报出的类型错误。
+- `LiveActivity.from()` 按 App 实际签名等待 `Promise<LiveActivity | null>`，恢复失败时安全处理，不再直接在 Promise 上调用 `update` / `end`。
+- 14 项自动测试通过，活动模拟包含异步恢复和空返回值。尚未在真机复验本次背景和类型修复。
+
+使用下方同一导入链接更新现有 **MetroMinutes** 到 `1.0.1`。更新后运行一次脚本，再点桌面组件的刷新图标。
+
 [在 iPhone 上导入 Scripting](https://scripting.fun/import_scripts?urls=%5B%22https%3A%2F%2Fgithub.com%2Fzhou-xc%2Fcqm-cd%2Ftree%2Fscripting%2FScripting%2FMetroMinutes%22%5D)
 
 如果浏览器没有唤起 App，在 Scripting 的 GitHub / URL 导入入口粘贴下面这个**子目录地址**：

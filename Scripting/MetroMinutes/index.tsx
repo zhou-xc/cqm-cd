@@ -1,4 +1,4 @@
-import { Button, Dialog, Link, List, Navigation, NavigationStack, Picker, Script, Text, VStack, Widget, useState } from "scripting";
+import { Button, Link, List, Navigation, NavigationStack, Picker, Script, Text, VStack, Widget, useState } from "scripting";
 import core, { STATIONS, type Preferences } from "./core";
 import { display, type Result } from "./data";
 import { query, savedPreferences, savePreferences } from "./service";
@@ -40,7 +40,9 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
         {STATIONS.filter(s => s.lineID === p.lineID).map(s => <Text key={s.stationID} tag={s.stationID}>{s.stationName}</Text>)}
       </Picker>
       <Picker title="方向" value={p.direction} pickerStyle="menu" disabled={busy}
-        onChanged={(direction: "up" | "down") => change({ ...p, direction })}>
+        onChanged={(direction: string) => {
+          if (direction === "up" || direction === "down") change({ ...p, direction });
+        }}>
         <Text tag="up">{display(p, result, Date.now(), "up").direction}</Text>
         <Text tag="down">{display(p, result, Date.now(), "down").direction}</Text>
       </Picker>

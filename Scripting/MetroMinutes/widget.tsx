@@ -38,8 +38,10 @@ async function main() {
     </Button>;
     const next = d.trains[0]?.departure ?? Date.now() + 60000;
     Widget.present(
-      <VStack alignment="leading" spacing={2} widgetBackground={p.dark ? "#171717" : "#FAFAFA"}
+      <VStack frame={{ maxWidth: "infinity", maxHeight: "infinity", alignment: "center" }}
+        widgetBackground={p.dark ? "#171717" : "#FAFAFA"}
         foregroundStyle={p.dark ? "white" : "black"} widgetURL={open}>
+      <VStack alignment="leading" spacing={2} padding={14} frame={{ maxWidth: "infinity", alignment: "leading" }}>
         <HStack spacing={5}>
           <Text font={small ? 16 : 20} fontWeight="semibold" lineLimit={1} minScaleFactor={0.65}
             frame={{ maxWidth: "infinity", alignment: "leading" }}>{d.station.stationName}</Text>
@@ -63,14 +65,19 @@ async function main() {
           <Text font={9} lineLimit={1} minScaleFactor={0.7} frame={{ maxWidth: "infinity", alignment: "leading" }}>{`查 ${d.queried}${medium ? " · " + d.status : ""}`}</Text>
           {!small && !medium ? refresh : null}
         </HStack>
+      </VStack>
       </VStack>,
       { policy: "after", date: new Date(Math.max(Date.now() + 20000, Math.min(next, Date.now() + 60000))) },
     );
   } catch (error) {
-    Widget.present(<VStack alignment="leading" spacing={8}>
+    const p = savedPreferences();
+    Widget.present(<VStack frame={{ maxWidth: "infinity", maxHeight: "infinity", alignment: "center" }}
+      widgetBackground={p.dark ? "#171717" : "#FAFAFA"} foregroundStyle={p.dark ? "white" : "black"}>
+      <VStack alignment="leading" spacing={8} padding={14}>
       <Text font="headline">重庆轨道到站</Text>
       <Text font="caption">{String(error instanceof Error ? error.message : error)}</Text>
       <Text font="caption">打开脚本重新选择站点</Text>
+      </VStack>
     </VStack>, { policy: "after", date: new Date(Date.now() + 60000) });
   }
 }

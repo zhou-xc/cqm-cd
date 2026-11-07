@@ -11,9 +11,12 @@ export async function startOrUpdate(data: ActivityData) {
   if (saved) {
     const state = await LiveActivity.getActivityState(saved.id);
     if (state === "active" || state === "stale") {
-      await LiveActivity.from<ActivityData>(saved.id, ACTIVITY_NAME).update(data, options);
-      Storage.set(KEY, { id: saved.id, data });
-      return;
+      const activity = await LiveActivity.from<ActivityData>(saved.id, ACTIVITY_NAME);
+      if (activity) {
+        await activity.update(data, options);
+        Storage.set(KEY, { id: saved.id, data });
+        return;
+      }
     }
   }
   // The public reference exposes enumeration/from(), but no instance ID getter.
@@ -34,7 +37,8 @@ export async function endActivity() {
   if (!saved) return;
   const state = await LiveActivity.getActivityState(saved.id);
   if (state === "active" || state === "stale" || state === "ended") {
-    await LiveActivity.from<ActivityData>(saved.id, ACTIVITY_NAME).end(saved.data, { dismissTimeInterval: 0 });
+    const activity = await LiveActivity.from<ActivityData>(saved.id, ACTIVITY_NAME);
+    if (activity) await activity.end(saved.data, { dismissTimeInterval: 0 });
   }
   Storage.remove(KEY);
 }
