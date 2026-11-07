@@ -13,7 +13,7 @@ function Arrival({ p, result, dir, small, compact = false }: { p: Preferences; r
       ? <Countdown arrival={d.trains[0].arrival} from={result.snapshot.fetchedAt} size={compact ? 32 : small ? 38 : 42} />
       : <Text font={32}>--:--</Text>}
     {!compact ? <Text font={10} lineLimit={1} minScaleFactor={0.8}>{d.status}</Text> : null}
-    {!small && !compact && d.trains.slice(1, 3).map(t => <Text font={12} key={t.arrival + t.destination}>
+    {!small && !compact && d.trains.slice(1, 2).map(t => <Text font={12} lineLimit={1} minScaleFactor={0.7} key={t.arrival + t.destination}>
       {`后续 ${core.clock(t.arrival)} · ${t.destination}`}
     </Text>)}
   </VStack>;
