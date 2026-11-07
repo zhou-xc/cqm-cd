@@ -1,5 +1,7 @@
 # 到站 · MetroMinutes
 
+**Scripting 版本：** [导入与使用说明](Scripting/README.md) · [脚本目录](Scripting/MetroMinutes)。本分支提供桌面图标刷新和基础锁屏倒计时，无需自己签名。
+
 重庆轨道到站查询的原生 iPhone 应用与黑白桌面小组件。最低 iOS 17。
 
 **当前交付状态：已通过 Xcode 16.4 模拟器编译、4 项 XCTest 和 iPhone arm64 编译，可生成包含 Widget 扩展的待签名 IPA。尚未在用户真机安装验证。源码 ZIP 与 IPA 是两个不同的文件。**

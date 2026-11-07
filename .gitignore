@@ -11,3 +11,5 @@ project.generated.json
 .python/
 Config/*-Info.plist
 Config/*.entitlements
+node_modules/
+Scripting/.check/

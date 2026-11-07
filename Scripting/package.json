@@ -1,0 +1,11 @@
+{
+  "name": "cqmcd-scripting-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node tests/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "smoke": "node tests/smoke.mjs"
+  },
+  "devDependencies": { "typescript": "5.9.3" }
+}
