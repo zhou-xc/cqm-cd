@@ -2,13 +2,12 @@ import core, { STATIONS, type Preferences } from "./core";
 import { display, type Result, type DisplayTrain } from "./data";
 import { THROUGH_STOPS, RAPID_STOPS } from "./timetable";
 
-export const VERSION = "1.3.0";
+export const VERSION = "1.3.1";
 export type SceneID = "work" | "home";
 export const sceneName = (id: SceneID) => id === "work" ? "上班" : "回家";
 export type Scene = { version: 1; id: SceneID; preferences: Preferences; destination: string;
   walkMinutes: number; entryMinutes: number; bufferMinutes: number; ready: boolean };
 export type SceneBook = { version: 1; active: SceneID; scenes: Partial<Record<SceneID, Scene>>; onboarded: boolean };
-export const destinationNames = [...new Set(STATIONS.map(s => s.stationName))].sort((a, b) => a.localeCompare(b, "zh"));
 export function draftScene(p: Preferences, id: SceneID = "work"): Scene {
   return { version: 1, id, preferences: core.preferences(p), destination: "", walkMinutes: 5, entryMinutes: 2, bufferMinutes: 1, ready: false };
 }
@@ -23,7 +22,7 @@ export function validateScene(value: unknown): Scene {
   if (typeof raw.stationID !== "string" || typeof raw.lineID !== "string" || !["up", "down"].includes(String(raw.direction)) ||
     typeof raw.dark !== "boolean" || !["timer", "minutes"].includes(String(raw.mode))) throw Error("场景缺少有效的线路、站点或方向");
   const preferences = core.preferences(raw as unknown as Preferences);
-  if (typeof v.destination !== "string" || !destinationNames.includes(v.destination)) throw Error("请选择有效的下车站");
+  if (typeof v.destination !== "string" || !STATIONS.some(s => s.stationName === v.destination)) throw Error("请选择有效的下车站");
   if (v.destination === core.stationFor(preferences).stationName) throw Error("上车站和下车站不能相同");
   const minutes = (name: string, min: number, max: number) => {
     const n = v[name];

@@ -22,6 +22,7 @@ async function renderWidget(family, result = { snapshot, error: null }, options 
   const now = options.now ?? base;
   const book = options.book ?? commute.readBook(null);
   const calls = [];
+  const storageReads = [];
   let capture;
   const presented = new Promise(resolve => { capture = resolve; });
   const scripting = Object.fromEntries(['Button', 'Group', 'HStack', 'Image', 'ProgressView', 'Rectangle',
@@ -31,11 +32,10 @@ async function renderWidget(family, result = { snapshot, error: null }, options 
   scripting.AppIntentManager = { register: config => parameter => ({ name: config.name, parameter,
     perform: () => config.perform(parameter) }) };
   scripting.Widget = { parameter: options.parameter ?? '', family, displaySize: { width: family === 'systemSmall' ? 170 : 360,
-    height: family === 'systemLarge' ? 380 : 170 }, present: (tree, policy) => capture({ tree, policy, calls }),
+    height: family === 'systemLarge' ? 380 : 170 }, present: (tree, policy) => capture({ tree, policy, calls, storageReads }),
     reloadAll: () => calls.push({ type: 'reload' }) };
   const cache = new Map([
     ['./core', { default: core }], ['./data', data], ['./widget_timeline', timeline], ['./commute', commute], ['scripting', scripting],
-    ['./scenes', { savedScenes: () => book, currentScene: parameter => commute.resolveScene(parameter, book, preferences) }],
     ['./service', { savedPreferences: () => preferences, query: async (p, force = false) => {
       calls.push({ type: 'query', parameter: core.parameter(p), force }); return options.results?.[p.stationID] ?? result;
     },
@@ -43,11 +43,12 @@ async function renderWidget(family, result = { snapshot, error: null }, options 
   ]);
   const createElement = (type, props, ...children) => typeof type === 'function'
     ? type({ ...props, children: children.flat(Infinity) }) : { type, props: props ?? {}, children: children.flat(Infinity) };
-  const context = vm.createContext({ Date: class extends Date { static now() { return now; } }, createElement });
+  const context = vm.createContext({ Date: class extends Date { static now() { return now; } }, createElement,
+    Storage: { get: key => { storageReads.push(key); return book; } } });
   function requireModule(name) {
     if (cache.has(name)) return cache.get(name);
-    assert.ok(['./widget', './time_gate', './countdown', './app_intents', './commute_widget'].includes(name), `unexpected module ${name}`);
-    const source = readFileSync(new URL(`../MetroMinutes/${name.slice(2)}.tsx`, import.meta.url), 'utf8');
+    assert.ok(['./widget', './time_gate', './countdown', './app_intents', './commute_widget', './scenes'].includes(name), `unexpected module ${name}`);
+    const source = readFileSync(new URL(`../MetroMinutes/${name.slice(2)}.${name === './scenes' ? 'ts' : 'tsx'}`, import.meta.url), 'utf8');
     const { outputText } = ts.transpileModule(source, { compilerOptions: {
       target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, jsxFactory: 'createElement',
     } });
@@ -64,6 +65,71 @@ function nodes(tree, type) {
   return [...(tree.type === type ? [tree] : []), ...tree.children.flatMap(child => nodes(child, type))];
 }
 const textOf = tree => nodes(tree, 'Text').flatMap(n => n.children).join(' ');
+
+// Evaluate the intended reveal instants in one archived tree. This verifies
+// wiring/occlusion only; it does not emulate native rasterization or memory.
+function visibleTree(tree, now) {
+  if (!tree || typeof tree !== 'object') return tree;
+  if (tree.props.mask) {
+    const [timer] = nodes(tree.props.mask, 'ProgressView');
+    if (now < (timer.props.timerFrom + timer.props.timerTo) / 2) return null;
+  }
+  let children = tree.children.map(c => visibleTree(c, now)).filter(c => c != null);
+  if (tree.type === 'ZStack') {
+    const cover = children.findLastIndex(c => c?.props?.mask && c.children?.[0]?.type === 'Rectangle'
+      && c.props.frame.width === tree.props.frame?.width && c.props.frame.height === tree.props.frame?.height);
+    if (cover >= 0) children = children.slice(cover);
+  }
+  return { ...tree, children };
+}
+
+test('every automatic gate filters a bounded centre sample before magnification', async () => {
+  for (const family of ['systemSmall', 'systemMedium', 'systemLarge']) {
+    const { tree } = await renderWidget(family, undefined, { mode: 'automatic' });
+    const masks = nodes(tree, 'ZStack').filter(n => n.props.mask).map(n => n.props.mask);
+    assert.ok(masks.length > 0);
+    for (const mask of masks) {
+      const stacks = nodes(mask, 'ZStack');
+      const filters = stacks.filter(n => n.props.luminanceToAlpha || n.props.contrast);
+      assert.equal(filters.length, 2);
+      for (const f of filters) {
+        assert.equal(f.props.frame.width, 2);
+        assert.equal(f.props.frame.height, 1);
+        assert.ok(!nodes(f, 'ZStack').some(n => n.props.scaleEffect), 'filters must never wrap the magnified view');
+      }
+      const [scale] = stacks.filter(n => n.props.scaleEffect);
+      assert.equal(scale.props.scaleEffect.x * 2, mask.props.frame.width);
+      assert.equal(scale.props.scaleEffect.y, mask.props.frame.height);
+      assert.equal(mask.props.contentShape, 'rect');
+    }
+  }
+});
+
+test('one small archived widget retains three arrival/dwell pairs, stale label and final refresh prompt', async () => {
+  const { tree, calls } = await renderWidget('systemSmall', undefined, { mode: 'automatic' });
+  for (let i = 0; i < trains.length; i++) {
+    const waitingAt = i ? trains[i - 1].departure + 1 : base;
+    const waiting = visibleTree(tree, waitingAt);
+    assert.deepEqual(nodes(waiting, 'TimerIntervalLabel').map(n => n.props.to), [trains[i].arrival]);
+    const dwelling = visibleTree(tree, trains[i].arrival + 1);
+    assert.deepEqual(nodes(dwelling, 'TimerIntervalLabel').map(n => n.props.to), [trains[i].departure]);
+    assert.match(textOf(dwelling), /预计停站中/);
+  }
+  assert.match(textOf(visibleTree(tree, base + 300001)), /旧数据推算/);
+  for (const now of [trains[2].departure + 1, base + 1800001]) {
+    const done = visibleTree(tree, now);
+    assert.equal(nodes(done, 'TimerIntervalLabel').length, 0);
+    assert.match(textOf(done), /班次数据已用完/);
+  }
+  assert.equal(calls.length, 1, 'advancing the cached view never issues another request');
+});
+
+test('explicit waiting parameters bypass the stored commute profiles', async () => {
+  const { tree, storageReads } = await renderWidget('systemSmall', undefined,
+    { mode: 'automatic', parameter: core.parameter(p), book: { version: 99, active: 'broken' } });
+  assert.match(textOf(tree), /兰花路/);
+  assert.equal(storageReads.length, 0);
+});
 
 test('automatic small widget archives each train timer once and one final prompt', async () => {
   const { tree, policy } = await renderWidget('systemSmall', undefined, { mode: 'automatic' });
@@ -112,7 +178,7 @@ test('default compatible path renders only current timers, with no masks or filt
     const all = JSON.stringify(tree);
     assert.doesNotMatch(all, /ProgressView|luminanceToAlpha|scaleEffect|contrast|"mask"/);
     assert.equal(nodes(tree, 'TimerIntervalLabel').length, family === 'systemSmall' ? 1 : 2);
-    assert.match(textOf(tree), /1\.3\.0 兼容/);
+    assert.match(textOf(tree), /1\.3\.1 兼容/);
     assert.match(textOf(tree), /到零请刷新/);
     assert.equal(nodes(tree, 'Button').length, 1);
   }
@@ -129,7 +195,7 @@ test('commute widgets differ by size, retain safe hit targets and avoid extra ma
       assert.match(textOf(tree), /建议有效至/);
       assert.equal(textOf(tree).includes('查询时的近三班'), family !== 'systemSmall');
       assert.equal(textOf(tree).includes('回家 ·'), family === 'systemLarge');
-      assert.doesNotMatch(textOf(tree), /1\.3\.0|兼容模式/);
+      assert.doesNotMatch(textOf(tree), /1\.3\.1|兼容模式/);
       const masked = nodes(tree, 'ZStack').filter(n => n.props.mask);
       assert.ok(masked.length <= (family === 'systemLarge' ? 6 : 3));
       if (mode === 'compatible') assert.equal(masked.length, 0);

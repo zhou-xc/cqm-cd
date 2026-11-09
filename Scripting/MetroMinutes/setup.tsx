@@ -1,6 +1,9 @@
 import { Button, Picker, Text, TextField, VStack, useState } from "scripting";
 import core, { STATIONS, type Preferences } from "./core";
-import { destinationNames, sceneName, validateScene, type Scene } from "./commute";
+import { sceneName, validateScene, type Scene } from "./commute";
+
+// Locale sorting belongs to the app's station picker, never widget startup.
+const destinationNames = [...new Set(STATIONS.map(s => s.stationName))].sort((a, b) => a.localeCompare(b, "zh"));
 
 export function SceneSetup({ initial, onSave, onCancel }: {
   initial: Scene; onSave: (scene: Scene) => Promise<void>; onCancel: () => void;
