@@ -17,7 +17,7 @@ for (const file of files.filter(f => /\.(ts|tsx)$/.test(f) && !f.endsWith('.d.ts
 }
 assert.deepEqual(errors.map(e => ts.flattenDiagnosticMessageText(e.messageText, '\n')), []);
 // Strict semantic checking of portable data logic against its real domain types.
-const program = ts.createProgram(['data.ts', 'widget_timeline.ts'].map(file => new URL(file, root).pathname.replace(/^\/(\w:)/, '$1')), {
+const program = ts.createProgram(['data.ts', 'widget_timeline.ts', 'commute.ts'].map(file => new URL(file, root).pathname.replace(/^\/(\w:)/, '$1')), {
   strict: true, noEmit: true, target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler,
 });
 const diagnostics = ts.getPreEmitDiagnostics(program);

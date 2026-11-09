@@ -7,6 +7,7 @@ import core from '../MetroMinutes/core.js';
 import { loadModule } from './modules.mjs';
 const data = await loadModule('data.ts');
 const timeline = await loadModule('widget_timeline.ts');
+const commute = await loadModule('commute.ts');
 const base = Date.parse('2026-11-09T08:00:00+08:00');
 const p = core.resolveParameter('兰花路|10号线|down|timer|dark', core.preferences());
 const trains = [120000, 600000, 1200000].map(offset => ({ arrival: base + offset,
@@ -19,6 +20,7 @@ const snapshot = { version: 2, stationID: p.stationID, lineID: p.lineID, fetched
 async function renderWidget(family, result = { snapshot, error: null }, options = {}) {
   const preferences = options.preferences ?? p;
   const now = options.now ?? base;
+  const book = options.book ?? commute.readBook(null);
   const calls = [];
   let capture;
   const presented = new Promise(resolve => { capture = resolve; });
@@ -28,13 +30,14 @@ async function renderWidget(family, result = { snapshot, error: null }, options 
   scripting.AppIntentProtocol = { AppIntent: 0 };
   scripting.AppIntentManager = { register: config => parameter => ({ name: config.name, parameter,
     perform: () => config.perform(parameter) }) };
-  scripting.Widget = { parameter: '', family, displaySize: { width: family === 'systemSmall' ? 170 : 360,
+  scripting.Widget = { parameter: options.parameter ?? '', family, displaySize: { width: family === 'systemSmall' ? 170 : 360,
     height: family === 'systemLarge' ? 380 : 170 }, present: (tree, policy) => capture({ tree, policy, calls }),
     reloadAll: () => calls.push({ type: 'reload' }) };
   const cache = new Map([
-    ['./core', { default: core }], ['./data', data], ['./widget_timeline', timeline], ['scripting', scripting],
+    ['./core', { default: core }], ['./data', data], ['./widget_timeline', timeline], ['./commute', commute], ['scripting', scripting],
+    ['./scenes', { savedScenes: () => book, currentScene: parameter => commute.resolveScene(parameter, book, preferences) }],
     ['./service', { savedPreferences: () => preferences, query: async (p, force = false) => {
-      calls.push({ type: 'query', parameter: core.parameter(p), force }); return result;
+      calls.push({ type: 'query', parameter: core.parameter(p), force }); return options.results?.[p.stationID] ?? result;
     },
       savedWidgetRendering: () => options.mode ?? 'compatible' }],
   ]);
@@ -43,7 +46,7 @@ async function renderWidget(family, result = { snapshot, error: null }, options 
   const context = vm.createContext({ Date: class extends Date { static now() { return now; } }, createElement });
   function requireModule(name) {
     if (cache.has(name)) return cache.get(name);
-    assert.ok(['./widget', './time_gate', './countdown', './app_intents'].includes(name), `unexpected module ${name}`);
+    assert.ok(['./widget', './time_gate', './countdown', './app_intents', './commute_widget'].includes(name), `unexpected module ${name}`);
     const source = readFileSync(new URL(`../MetroMinutes/${name.slice(2)}.tsx`, import.meta.url), 'utf8');
     const { outputText } = ts.transpileModule(source, { compilerOptions: {
       target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, jsxFactory: 'createElement',
@@ -109,10 +112,58 @@ test('default compatible path renders only current timers, with no masks or filt
     const all = JSON.stringify(tree);
     assert.doesNotMatch(all, /ProgressView|luminanceToAlpha|scaleEffect|contrast|"mask"/);
     assert.equal(nodes(tree, 'TimerIntervalLabel').length, family === 'systemSmall' ? 1 : 2);
-    assert.match(textOf(tree), /1\.2\.2 兼容/);
+    assert.match(textOf(tree), /1\.3\.0 兼容/);
     assert.match(textOf(tree), /到零请刷新/);
     assert.equal(nodes(tree, 'Button').length, 1);
   }
+});
+
+test('commute widgets differ by size, retain safe hit targets and avoid extra mask layers', async () => {
+  const work = commute.validateScene({ ...commute.draftScene(p), destination: '王家庄', walkMinutes: 1, entryMinutes: 0 });
+  const home = commute.validateScene({ ...work, id: 'home' });
+  const book = { version: 1, active: 'work', onboarded: true, scenes: { work, home } };
+  for (const mode of ['automatic', 'compatible']) {
+    for (const family of ['systemSmall', 'systemMedium', 'systemLarge']) {
+      const { tree, calls } = await renderWidget(family, undefined, { mode, book });
+      assert.match(textOf(tree), /建议.*发车班次/);
+      assert.match(textOf(tree), /建议有效至/);
+      assert.equal(textOf(tree).includes('查询时的近三班'), family !== 'systemSmall');
+      assert.equal(textOf(tree).includes('回家 ·'), family === 'systemLarge');
+      assert.doesNotMatch(textOf(tree), /1\.3\.0|兼容模式/);
+      const masked = nodes(tree, 'ZStack').filter(n => n.props.mask);
+      assert.ok(masked.length <= (family === 'systemLarge' ? 6 : 3));
+      if (mode === 'compatible') assert.equal(masked.length, 0);
+      const buttons = nodes(tree, 'Button');
+      assert.equal(buttons.length, family === 'systemLarge' ? 2 : 1);
+      for (const button of buttons) {
+        const parent = nodes(tree, 'ZStack').find(n => n.children.includes(button));
+        assert.equal(parent.children.filter(Boolean).at(-1), button);
+        assert.equal(button.children[0].props.contentShape, 'rect');
+        assert.equal(button.props.intent.name, 'CQMetroRefreshCommute');
+      }
+      assert.equal(calls.length, 1, 'same-station scenes share the request');
+      await buttons[0].props.intent.perform();
+      assert.deepEqual(calls.map(c => [c.type, c.force]), [['query', false], ['query', true], ['reload', undefined]]);
+    }
+  }
+});
+
+test('large commute widget queries different stations independently and refreshes the chosen scene only', async () => {
+  const work = commute.validateScene({ ...commute.draftScene(p), destination: '王家庄' });
+  const hp = core.resolveParameter('头塘|4号线|up|timer|dark', p);
+  const home = commute.validateScene({ ...commute.draftScene(hp, 'home'), destination: '民安大道' });
+  const book = { version: 1, active: 'work', onboarded: true, scenes: { work, home } };
+  const { tree, calls } = await renderWidget('systemLarge', undefined, { book, results: { [hp.stationID]: { snapshot: null, error: 'offline' } } });
+  assert.equal(calls.filter(c => c.type === 'query').length, 2);
+  assert.match(textOf(tree), /头塘/);
+  assert.match(textOf(tree), /刷新失败/);
+  assert.match(textOf(tree), /兰花路/);
+  const buttons = nodes(tree, 'Button');
+  await buttons[1].props.intent.perform();
+  assert.equal(calls.at(-2).parameter, core.parameter(hp));
+  const legacy = await renderWidget('systemSmall', undefined, { book, parameter: core.parameter(p) });
+  assert.doesNotMatch(textOf(legacy.tree), /建议.*发车班次/);
+  assert.match(textOf(legacy.tree), /距预计到达/);
 });
 
 test('refresh is above all time layers, has full hit bounds, and invokes the same forced query in both modes', async () => {

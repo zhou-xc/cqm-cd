@@ -6,6 +6,9 @@ import { TimeGate } from "./time_gate";
 import { query, savedPreferences, savedWidgetRendering } from "./service";
 import { Countdown } from "./countdown";
 import { RefreshArrival } from "./app_intents";
+import { currentScene, savedScenes } from "./scenes";
+import { CommuteWidget } from "./commute_widget";
+import { VERSION } from "./commute";
 
 function Timing({ d, fetchedAt, large }: { d: WidgetDisplay; fetchedAt: number; large: boolean }) {
   return <VStack alignment="leading" spacing={1} frame={{ maxWidth: "infinity", alignment: "leading" }}>
@@ -80,7 +83,26 @@ function ArrivalDeck({ p, result, dir, now, width, height, large, automatic }: {
 
 async function main() {
   try {
-    const p = core.resolveParameter(Widget.parameter, savedPreferences());
+    const scene = currentScene(Widget.parameter);
+    const p = scene.preferences;
+    if (scene.ready) {
+      const book = savedScenes();
+      const list = Widget.family === "systemLarge" && !String(Widget.parameter ?? "").startsWith("CQMETRO1:")
+        ? [book.scenes.work, book.scenes.home].filter((s): s is typeof scene => !!s) : [scene];
+      if (!list.length) list.push(scene);
+      const requests = new Map<string, ReturnType<typeof query>>();
+      const items = await Promise.all(list.map(async s => {
+        const key = `${s.preferences.lineID}:${s.preferences.stationID}`;
+        if (!requests.has(key)) requests.set(key, query(s.preferences));
+        return { scene: s, result: await requests.get(key)! };
+      }));
+      const now = Date.now();
+      Widget.present(<CommuteWidget items={items} current={scene} now={now} family={Widget.family}
+        width={Math.max(110, Widget.displaySize.width - 24)} automatic={savedWidgetRendering() === "automatic"}
+        parameter={String(Widget.parameter ?? "")} />,
+        { policy: "after", date: new Date(Math.min(...items.map(i => nextWidgetReload(i.result, now)))) });
+      return;
+    }
     const result = await query(p);
     const now = Date.now();
     const automatic = savedWidgetRendering() === "automatic";
@@ -118,7 +140,7 @@ async function main() {
             {!small ? <ArrivalDeck p={p} result={result} dir={p.direction === "up" ? "down" : "up"}
               now={now} width={cardWidth} height={cardHeight} large={large} automatic={automatic} /> : null}
           </HStack>
-          <Text font={8} lineLimit={1} minScaleFactor={0.6}>{`查询 ${d.queried} · 1.2.2 ${automatic ? "自动" : "兼容"}`}</Text>
+          <Text font={8} lineLimit={1} minScaleFactor={0.6}>{`查询 ${d.queried} · ${VERSION} ${automatic ? "自动" : "兼容"}`}</Text>
         </VStack>
         {/* Clip/mask only governs drawing. Keep the hit target above every
             magnified time layer, with an explicit rectangular button label. */}
