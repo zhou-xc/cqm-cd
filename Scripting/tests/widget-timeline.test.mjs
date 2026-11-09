@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import core from '../MetroMinutes/core.js';
 import { loadModule } from './modules.mjs';
-const { widgetTimeline, nextWidgetReload } = await loadModule('widget_timeline.ts');
+const { widgetTimeline, widgetCards, nextWidgetReload } = await loadModule('widget_timeline.ts');
 const { display, INFERENCE_AGE } = await loadModule('data.ts');
 const at = time => Date.parse('2026-11-09T' + time + '+08:00');
 const p = core.resolveParameter('兰花路|10号线|down|timer|dark', core.preferences());
@@ -15,6 +15,41 @@ const result = (down = trains, extra = {}) => ({ snapshot: { version: 2, station
 // Simulate the latest revealed layer from one frozen render, without invoking
 // display() again to decide what the widget would show.
 const visible = (frames, time) => frames.filter(f => f.at <= time).at(-1).view;
+const visibleCard = (cards, time) => {
+  const card = cards.filter(c => c.at <= time).at(-1);
+  return card.arrived && card.arrived.at <= time ? card.arrived.view : card.view;
+};
+
+test('compact cards preserve train selection and countdown targets through the full cache lifetime', () => {
+  const scenarios = [result(), result([train('08:40:00', '08:41:00')]), result([
+    train('08:02:00', '08:03:00', { destination: '后堡', skipStopFlag: 2 }), trains[1], trains[2],
+  ]), result([
+    train('08:02:00', '08:02:00', { departureKnown: false }), train('08:02:20', '08:02:50'), trains[2],
+  ])];
+  for (const r of scenarios) {
+    for (const start of [base, at('08:02:10'), at('08:10:30')]) {
+      const cards = widgetCards(p, r, start);
+      assert.ok(cards.length <= 4);
+      assert.ok(cards.filter(c => c.arrived).length <= 3);
+      for (let now = start; now <= base + INFERENCE_AGE + 60000; now += 1000) {
+        const actual = visibleCard(cards, now), expected = display(p, r, now);
+        assert.equal(actual.current?.arrival, expected.current?.arrival);
+        assert.equal(actual.targetTime, expected.targetTime);
+        if (expected.current) assert.equal(actual.status,
+          expected.status.replace('预计即将到达', '预计到达').replace('预计即将发车', '预计停站中'));
+      }
+    }
+  }
+});
+
+test('compact empty/error/exhausted decks are one permanent prompt, with no future timer', () => {
+  for (const r of [result([]), { snapshot: null, error: 'offline' }, result()]) {
+    const cards = widgetCards(p, r, at('08:22:00'));
+    assert.equal(cards.length, 1);
+    assert.equal(cards[0].view.targetTime, null);
+    assert.equal(cards[0].arrived, undefined);
+  }
+});
 
 test('one prebuilt deck covers arrival, dwell, three departures and exhaustion', () => {
   const frames = widgetTimeline(p, result(), base);

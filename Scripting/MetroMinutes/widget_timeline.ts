@@ -3,6 +3,7 @@ import { display, trainEnd, INFERENCE_AGE, type Result } from "./data";
 
 export type WidgetDisplay = ReturnType<typeof display>;
 export type WidgetFrame = { at: number; view: WidgetDisplay };
+export type WidgetCard = WidgetFrame & { arrived?: WidgetFrame };
 
 function frameAt(p: Preferences, result: Result, at: number, dir: Direction): WidgetFrame {
   const view = display(p, result, at, dir);
@@ -43,6 +44,32 @@ export function widgetTimeline(p: Preferences, result: Result, now: number, dir:
     if (key !== previous) { frames.push(frame); previous = key; }
   }
   return frames;
+}
+
+// A whole card is needed only when the current train changes. Arrival changes
+// just its timer/status area. Approach/departure warnings stay in the app;
+// copying the entire card for those warnings duplicated the native view tree.
+export function widgetCards(p: Preferences, result: Result, now: number, dir: Direction = p.direction): WidgetCard[] {
+  const cards: WidgetCard[] = [];
+  let previous = "";
+  for (const frame of widgetTimeline(p, result, now, dir)) {
+    const d = frame.view, t = d.current;
+    const key = t ? JSON.stringify([t.arrival, t.departure, t.destination]) : "terminal";
+    const simplified = { ...frame, view: { ...d,
+      status: d.status === "预计即将到达" ? "预计到达" : d.status === "预计即将发车" ? "预计停站中" : d.status,
+    } };
+    if (key !== previous) {
+      cards.push(simplified);
+      previous = key;
+    } else if (t && frame.at >= t.arrival) {
+      const card = cards[cards.length - 1];
+      if (card.at < t.arrival && !card.arrived) card.arrived = simplified;
+    }
+    // A refresh prompt is final. Never add more full-screen expiry/freshness
+    // layers after the batch is exhausted, and never repeat an earlier train.
+    if (!t) break;
+  }
+  return cards;
 }
 
 // Visual phase transitions are handled by prebuilt masks. This request is only

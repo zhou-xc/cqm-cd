@@ -1,7 +1,7 @@
 import { Button, Link, List, Navigation, NavigationStack, Picker, Script, Text, VStack, Widget, useState } from "scripting";
 import core, { STATIONS, type Preferences } from "./core";
 import { display, type Result } from "./data";
-import { query, savedPreferences, savePreferences } from "./service";
+import { query, savedPreferences, savePreferences, savedWidgetRendering, saveWidgetRendering } from "./service";
 import { Countdown } from "./countdown";
 import { endActivity, startOrUpdate } from "./activity";
 
@@ -14,6 +14,7 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
   const [result, setResult] = useState(initialResult);
   const [busy, setBusy] = useState(false);
   const [now, setNow] = useState(Date.now());
+  const [rendering, setRendering] = useState(savedWidgetRendering());
   const d = display(p, result, now);
   function startPageClock() {
     stopPageClock();
@@ -60,6 +61,18 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
         onChanged={(theme: string) => change({ ...p, dark: theme === "dark" })}>
         <Text tag="dark">深色</Text><Text tag="light">浅色</Text>
       </Picker>
+      <Picker title="桌面显示模式" value={rendering} pickerStyle="menu" disabled={busy}
+        onChanged={(value: string) => {
+          if (value !== "compatible" && value !== "automatic") return;
+          saveWidgetRendering(value); setRendering(value); Widget.reloadAll();
+        }}>
+        <Text tag="compatible">兼容模式（默认）</Text>
+        <Text tag="automatic">自动切班（精简版）</Text>
+      </Picker>
+      <Text font="caption">{rendering === "compatible"
+        ? "兼容模式保留本班倒计时，到零后请刷新；停站和下一班在组件重新加载时更新。"
+        : "自动切班预先准备近三班，并在到站后切换可用的发车倒计时。若桌面变白，可在此切回兼容模式。"}</Text>
+      <Text font="caption">显示模式应用于本机所有 MetroMinutes 组件，不影响各组件的站点参数。更改模式会申请重新加载，系统可能延迟。</Text>
       <VStack alignment="leading" spacing={6}>
         <Text font="headline">{d.station.stationName + " · " + d.direction}</Text>
         {d.service ? <Text>{d.service}</Text> : null}
@@ -100,7 +113,7 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
           await Dialog.alert({ title: "参数已复制", message: "长按桌面小组件 → 编辑小组件，将参数粘贴到参数栏。" });
         })} />
       <Text font="caption">页面按上次查询的时间推算状态，不代表列车实况。5 分钟后标记旧数据，最长推算 30 分钟；已知班次用完后请刷新。图片时刻按周一至周五/周末匹配，未包含节假日及临时调图。</Text>
-      <Text font="caption">桌面预先准备近三班的状态画面，按预计到发时间自动切换；班次用完后请刷新。系统刷新用于取得新数据，可能延迟。锁屏仍展示选中单班。</Text>
+      <Text font="caption">MetroMinutes 1.2.1 · 自动模式的近三班用完后请刷新。锁屏仍展示选中单班。</Text>
     </List>
   </NavigationStack>;
 }
