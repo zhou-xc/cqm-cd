@@ -8,7 +8,7 @@ import { Countdown } from "./countdown";
 import { RefreshArrival } from "./app_intents";
 import { currentScene, savedScenes } from "./scenes";
 import { CommuteWidget } from "./commute_widget";
-import { VERSION } from "./commute";
+import { VERSION, bindScene, widgetSelection } from "./commute";
 
 function Timing({ d, fetchedAt, large }: { d: WidgetDisplay; fetchedAt: number; large: boolean }) {
   return <VStack alignment="leading" spacing={1} frame={{ maxWidth: "infinity", alignment: "leading" }}>
@@ -83,11 +83,12 @@ function ArrivalDeck({ p, result, dir, now, width, height, large, automatic }: {
 
 async function main() {
   try {
+    const selection = widgetSelection(Widget.parameter);
     const scene = currentScene(Widget.parameter);
     const p = scene.preferences;
-    if (scene.ready) {
+    if (selection.content === "commute" && scene.ready) {
       const book = savedScenes();
-      const list = Widget.family === "systemLarge" && !String(Widget.parameter ?? "").startsWith("CQMETRO1:")
+      const list = Widget.family === "systemLarge" && !selection.parameter.startsWith("CQMETRO1:")
         ? [book.scenes.work, book.scenes.home].filter((s): s is typeof scene => !!s) : [scene];
       if (!list.length) list.push(scene);
       const requests = new Map<string, ReturnType<typeof query>>();
@@ -113,7 +114,9 @@ async function main() {
     const cardWidth = small ? contentWidth : (contentWidth - 12) / 2;
     const cardHeight = large ? Math.max(130, Math.min(170, Widget.displaySize.height - 110)) : 66;
     const refreshWidth = small ? 44 : 76;
-    const open = Script.createRunURLScheme(Script.name, { parameter: core.parameter(p) });
+    const open = Script.createRunURLScheme(Script.name, {
+      parameter: selection.parameter || (scene.ready ? bindScene(scene.id) : core.parameter(p)),
+    });
     const refresh = <Button intent={RefreshArrival(core.parameter(p))} buttonStyle="plain"
       frame={{ width: refreshWidth, height: 44 }} contentShape="rect"
       accessibilityLabel="刷新到站信息" accessibilityHint="重新查询班次并更新组件">

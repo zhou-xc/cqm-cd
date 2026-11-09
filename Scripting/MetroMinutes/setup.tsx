@@ -1,9 +1,23 @@
-import { Button, Picker, Text, TextField, VStack, useState } from "scripting";
+import { Button, HStack, Image, List, NavigationStack, Picker, Spacer, Text, VStack, useState } from "scripting";
 import core, { STATIONS, type Preferences } from "./core";
 import { sceneName, validateScene, type Scene } from "./commute";
 
 // Locale sorting belongs to the app's station picker, never widget startup.
 const destinationNames = [...new Set(STATIONS.map(s => s.stationName))].sort((a, b) => a.localeCompare(b, "zh"));
+
+function DestinationPicker({ origin, selected, onSelect, onCancel }: {
+  origin: string; selected: string; onSelect: (station: string) => void; onCancel: () => void;
+}) {
+  const [search, setSearch] = useState("");
+  const matches = destinationNames.filter(name => name !== origin && name.includes(search.trim()));
+  return <NavigationStack><List navigationTitle="下车站" buttonStyle="borderless"
+    searchable={{ value: search, onChanged: setSearch, placement: "navigationBarDrawerAlwaysDisplay", prompt: "搜索下车站" }}
+    toolbar={{ cancellationAction: <Button title="取消选择" action={onCancel} /> }}>
+    {matches.length ? matches.map(name => <Button key={name} title={name}
+      systemImage={name === selected ? "checkmark" : undefined} action={() => onSelect(name)} />)
+      : <Text>没有找到匹配站点，试试站名的一部分</Text>}
+  </List></NavigationStack>;
+}
 
 export function SceneSetup({ initial, onSave, onCancel }: {
   initial: Scene; onSave: (scene: Scene) => Promise<void>; onCancel: () => void;
@@ -11,7 +25,7 @@ export function SceneSetup({ initial, onSave, onCancel }: {
   const [draft, setDraft] = useState(initial);
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
-  const [search, setSearch] = useState("");
+  const [choosingDestination, setChoosingDestination] = useState(false);
   const p = draft.preferences, station = core.stationFor(p);
   const lines = [...new Map(STATIONS.map(s => [s.lineID, s.lineName])).entries()];
   const change = (next: Preferences) => setDraft({ ...draft, preferences: next,
@@ -20,7 +34,13 @@ export function SceneSetup({ initial, onSave, onCancel }: {
     <Picker title={title} value={draft[key]} pickerStyle="menu" onChanged={(value: number) => setDraft({ ...draft, [key]: value })}>
       {Array.from({ length: max - min + 1 }, (_, i) => <Text key={i + min} tag={i + min}>{`${i + min} 分钟`}</Text>)}
     </Picker>;
-  return <VStack alignment="leading" spacing={12}>
+  return <VStack alignment="leading" spacing={12} sheet={{
+    isPresented: choosingDestination, onChanged: setChoosingDestination,
+    content: choosingDestination ? <DestinationPicker origin={station.stationName} selected={draft.destination}
+      onCancel={() => setChoosingDestination(false)} onSelect={destination => {
+        setDraft({ ...draft, destination }); setChoosingDestination(false);
+      }} /> : <Text />,
+  }}>
     <Text font="title2">{`${sceneName(draft.id)} · ${["从哪里上车", "去哪里下车", "到站需要多久", "确认通勤场景"][step]}`}</Text>
     <Text font="caption">{`第 ${step + 1} / 4 步 · 保存前不会覆盖现有场景`}</Text>
     {step === 0 ? <VStack alignment="leading" spacing={10}>
@@ -36,11 +56,13 @@ export function SceneSetup({ initial, onSave, onCancel }: {
       <Picker title="乘车方向" value={p.direction} pickerStyle="menu" onChanged={(direction: string) => {
         if (direction === "up" || direction === "down") change({ ...p, direction });
       }}><Text tag="up">{station.upLabel}</Text><Text tag="down">{station.downLabel}</Text></Picker>
-      <TextField title="查找下车站" value={search} onChanged={setSearch} prompt="输入站名关键字" />
-      <Picker title="下车站" value={draft.destination} pickerStyle="navigationLink" onChanged={(destination: string) => setDraft({ ...draft, destination })}>
-        <Text tag="">请选择</Text>
-        {destinationNames.filter(n => n !== station.stationName && (n.includes(search.trim()) || n === draft.destination)).map(n => <Text key={n} tag={n}>{n}</Text>)}
-      </Picker>
+      <Button action={() => setChoosingDestination(true)} accessibilityLabel="选择下车站" buttonStyle="plain">
+        <HStack frame={{ minHeight: 44 }} contentShape="rect">
+          <Text>下车站</Text><Spacer />
+          <Text foregroundStyle="secondaryLabel">{draft.destination || "请选择"}</Text>
+          <Image systemName="chevron.right" foregroundStyle="secondaryLabel" />
+        </HStack>
+      </Button>
       <Text font="caption">先判断本班是否直达，不规划换乘。尚未核实的交路会标注待确认，不作为赶车推荐。环线方向请结合官方页面核对。</Text>
     </VStack> : null}
     {step === 2 ? <VStack alignment="leading" spacing={10}>

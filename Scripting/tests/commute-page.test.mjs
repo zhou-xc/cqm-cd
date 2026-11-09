@@ -9,15 +9,19 @@ const commute = await loadModule('commute.ts');
 const data = await loadModule('data.ts');
 const base = Date.parse('2026-11-09T08:00:00+08:00');
 const p = core.resolveParameter('头塘|4号线|up|timer|dark', core.preferences());
-const treeNodes = (tree, type) => !tree || typeof tree !== 'object' ? []
-  : [...(tree.type === type ? [tree] : []), ...tree.children.flatMap(c => treeNodes(c, type))];
+const treeNodes = (tree, type) => {
+  if (!tree || typeof tree !== 'object') return [];
+  if (tree.props.sheet?.isPresented) return treeNodes(tree.props.sheet.content, type);
+  return [...(tree.type === type ? [tree] : []), ...tree.children.flatMap(c => treeNodes(c, type)),
+    ...Object.values(tree.props.toolbar ?? {}).flatMap(c => treeNodes(c, type))];
+};
 
 // Stateful JS-only host for the actual onboarding/share handlers. It checks
 // navigation and persistence, not SwiftUI pixels or native event delivery.
 function host() {
   const storage = new Map(), hooks = new Map(), alerts = [], previews = [], calls = [];
   let active, visited, clipboard = '';
-  const scripting = Object.fromEntries(['Button', 'HStack', 'Link', 'List', 'NavigationStack', 'Picker',
+  const scripting = Object.fromEntries(['Button', 'HStack', 'Image', 'Spacer', 'Link', 'List', 'NavigationStack', 'Picker',
     'Text', 'TextField', 'VStack', 'TimerIntervalLabel'].map(n => [n, n]));
   scripting.Navigation = { useDismiss: () => () => {} };
   scripting.Widget = { reloadAll: () => calls.push('reload'), preview: async o => previews.push(o) };
@@ -65,13 +69,20 @@ function host() {
   }
   render();
   const find = (type, title) => {
-    const node = treeNodes(tree, type).find(n => n.props.title === title);
+    const node = treeNodes(tree, type).find(n => n.props.title === title || n.props.accessibilityLabel === title);
     assert.ok(node, `missing ${type}: ${title}`); return node;
   };
   return { storage, alerts, previews, calls, render,
     text: () => treeNodes(tree, 'Text').flatMap(n => n.children).join(' '),
     click: async title => { const n = find('Button', title); assert.ok(!n.props.disabled, title); await n.props.action(); await new Promise(resolve => setImmediate(resolve)); render(); },
     change: (type, title, value) => { find(type, title).props.onChanged(value); render(); },
+    search: value => {
+      const lists = treeNodes(tree, 'List').filter(n => n.props.searchable);
+      assert.equal(lists.length, 1, 'search belongs inside the open destination list');
+      assert.equal(lists[0].props.navigationTitle, '下车站');
+      lists[0].props.searchable.onChanged(value); render();
+    },
+    has: (type, title) => treeNodes(tree, type).some(n => n.props.title === title || n.props.accessibilityLabel === title),
     button: title => find('Button', title),
     clipboard: () => clipboard,
   };
@@ -82,7 +93,9 @@ test('first-use setup, preview, sharing and reviewed import form a complete work
   assert.equal(ui.storage.size, 0);
   await ui.click('下一步');
   assert.equal(ui.button('下一步').props.disabled, true);
-  ui.change('Picker', '下车站', '民安大道');
+  await ui.click('选择下车站');
+  ui.search('民安');
+  await ui.click('民安大道');
   await ui.click('下一步');
   ui.change('Picker', '步行到站口', 7);
   await ui.click('下一步');
@@ -92,8 +105,22 @@ test('first-use setup, preview, sharing and reviewed import form a complete work
   assert.match(ui.text(), /场景已保存/);
   await ui.click('小号');
   assert.equal(ui.previews[0].parameters.options.current, 'scene:work');
-  await ui.click('复制上班组件配置');
+  await ui.click('复制候车倒计时参数');
   assert.equal(ui.clipboard(), 'scene:work');
+  assert.match(ui.text(), /小号看所选方向倒计时/);
+  const savedBefore = JSON.stringify([...ui.storage]);
+  const callsBefore = ui.calls.length;
+  ui.change('Picker', '组件内容', 'commute');
+  assert.match(ui.text(), /小号看出门建议/);
+  await ui.click('中号');
+  assert.equal(ui.previews.at(-1).parameters.options.current, 'commute:work');
+  await ui.click('复制通勤建议参数');
+  assert.equal(ui.clipboard(), 'commute:work');
+  ui.change('Picker', '组件内容', 'waiting');
+  await ui.click('大号');
+  assert.equal(ui.previews.at(-1).parameters.options.current, 'scene:work');
+  assert.equal(JSON.stringify([...ui.storage]), savedBefore, 'content choice does not overwrite scene or render settings');
+  assert.equal(ui.calls.length, callsBefore, 'preview/copy choice does not query or reload other widgets');
   await ui.click('我已了解，返回看板');
   assert.equal(ui.storage.get('cqmetro.scenes.v1').onboarded, true);
   await ui.click('分享 / 导入通勤配置');
@@ -122,4 +149,48 @@ test('cancelled onboarding and invalid share codes cannot change existing config
   await ui.click('显示设置与锁屏计时');
   await ui.click('复制候车组件参数');
   assert.equal(ui.clipboard(), core.parameter(p));
+});
+
+test('waiting widgets can be added without a commute profile, and advice requires saving a scene', async () => {
+  const ui = host();
+  await ui.click('稍后设置，先查看到站');
+  await ui.click('添加桌面组件');
+  assert.match(ui.text(), /把候车倒计时放到桌面/);
+  await ui.click('小号');
+  assert.equal(ui.previews.at(-1).parameters.options.current, core.parameter(p));
+  await ui.click('复制候车倒计时参数');
+  assert.equal(ui.clipboard(), core.parameter(p));
+  ui.change('Picker', '组件内容', 'commute');
+  assert.ok(ui.button('小号').props.disabled);
+  assert.ok(ui.button('复制通勤建议参数').props.disabled);
+  assert.equal(ui.storage.size, 0);
+  await ui.click('先保存通勤场景');
+  assert.match(ui.text(), /第 1 \/ 4 步/);
+});
+
+test('destination search and selection share one list and cancellation preserves the selected station', async () => {
+  const ui = host();
+  await ui.click('下一步');
+  assert.ok(!ui.has('TextField', '查找下车站'), 'no separate search field outside the selector');
+  await ui.click('选择下车站');
+  assert.ok(!ui.has('Button', '头塘'), 'origin cannot be a destination');
+  ui.search('不存在的车站');
+  assert.match(ui.text(), /没有找到匹配站点/);
+  assert.ok(!ui.has('Button', '民安大道'));
+  await ui.click('取消选择');
+  assert.ok(ui.button('下一步').props.disabled, 'cancelling does not invent a selection');
+  await ui.click('选择下车站');
+  assert.ok(ui.has('Button', '民安大道'), 'reopening starts with an unfiltered list');
+  ui.search(' 民安 ');
+  assert.ok(ui.has('Button', '民安大道'));
+  assert.ok(!ui.has('Button', '兰花路'));
+  await ui.click('民安大道');
+  assert.match(ui.text(), /民安大道/);
+  assert.ok(!ui.button('下一步').props.disabled, 'one tap selects and closes the list');
+  await ui.click('选择下车站');
+  assert.equal(ui.button('民安大道').props.systemImage, 'checkmark');
+  ui.search('兰花');
+  await ui.click('取消选择');
+  assert.match(ui.text(), /民安大道/);
+  assert.equal(ui.storage.size, 0, 'selection edits only the unsaved draft');
 });

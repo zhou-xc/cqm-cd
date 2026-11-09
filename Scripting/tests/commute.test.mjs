@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { loadModule } from './modules.mjs';
 import core from '../MetroMinutes/core.js';
 const { draftScene, validateScene, shareScene, importScene, readBook, resolveScene, recommendedScene,
-  advice, adviceCards, destinationReach } = await loadModule('commute.ts');
+  advice, adviceCards, destinationReach, bindScene, widgetSelection } = await loadModule('commute.ts');
 const { display } = await loadModule('data.ts');
 const base = Date.parse('2026-11-09T08:00:00+08:00');
 const p = core.resolveParameter('头塘|4号线|up|timer|dark', core.preferences());
@@ -38,6 +38,24 @@ test('scene bindings, active choice and legacy widget parameters remain independ
   assert.throws(() => resolveScene('scene:invalid', book, p));
   const partial = readBook({ ...book, scenes: { work: scene, home: { broken: true } } });
   assert.ok(partial.scenes.work); assert.equal(partial.scenes.home, undefined);
+});
+
+test('widget content defaults to waiting and commute advice requires an explicit parameter', () => {
+  const book = readBook({ version: 1, active: 'work', scenes: { work: scene } });
+  for (const input of [undefined, null, '', '   ', 'scene:work', core.parameter(p), JSON.stringify(p), shareScene(scene)]) {
+    assert.equal(widgetSelection(input).content, 'waiting');
+    assert.deepEqual(resolveScene(input, book, p).preferences, p);
+  }
+  assert.equal(bindScene('work'), 'scene:work');
+  assert.equal(bindScene('home', 'commute'), 'commute:home');
+  for (const input of ['commute:work', '  commute:work  ', 'commute:' + shareScene(scene)]) {
+    assert.equal(widgetSelection(input).content, 'commute');
+    assert.deepEqual(resolveScene(input, book, p), scene);
+  }
+  assert.throws(() => resolveScene('commute:home', book, p), /先打开脚本保存回家/);
+  for (const input of ['commute:', 'commute:invalid', 'commute:scene:work', 'commute:' + core.parameter(p)]) {
+    assert.throws(() => resolveScene(input, book, p), /通勤建议参数无效/);
+  }
 });
 
 test('time-of-day suggestions use Shanghai time and never switch the saved active scene', () => {

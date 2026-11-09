@@ -2,6 +2,16 @@
 
 将 [`MetroMinutes`](./MetroMinutes) 导入 iPhone 的 Scripting App。原生 Swift 项目仍保留在仓库中，本页说明脚本版。
 
+## 1.4.0 · 默认候车倒计时
+
+- 桌面默认显示到站倒计时。参数留空、`scene:work` / `scene:home`、旧格式参数或普通分享码都使用候车布局；保存通勤场景不再自动把组件切成出门建议。
+- 自动切班、已确认停靠且有有效发车时间时的停站倒计时、近三班缓存推算继续保留。沿用原来的兼容 / 自动选择，不重置已保存的站点、场景或缓存。
+- **添加桌面组件 → 组件内容** 可选择“候车倒计时（默认）”或“通勤建议”，预览、尺寸说明和复制参数同步切换。通勤建议使用 `commute:work` / `commute:home`，可与候车组件同时添加；尚未保存通勤场景也能直接预览、复制候车参数。
+- App 内保留上班 / 回家、出门建议、目的站可达判断、分享导入和锁屏计时。点击场景绑定的候车组件进入 App 时，仍保留完整场景。
+- 下车站改成点击后进入带搜索框的选择列表；边搜索边点选，选中后直接返回。取消不改选择，重新打开清空搜索，不再要求在外面输入后再打开下拉选择。
+
+**升级提示：** 之前用 `scene:work` / `scene:home` 的组件会在重新加载后恢复候车倒计时。希望保留出门建议时，在 App 中选择“通勤建议”并重新复制参数即可；大号候车组件显示同站双向，大号通勤建议组件仍可显示上班和回家。
+
 ## 1.3.1 · 自动模式渲染减负
 
 - 针对小号候车组件在“自动切班（精简版）”再次 loading 的反馈，时间遮罩改成先裁剪、过滤进度条中央 **2 × 1 点**，再放大到显示区域。原来先放大进度条，再在整块卡片范围做滤镜；现在滤镜声明的处理区域不随卡片大小扩大。
@@ -20,7 +30,7 @@
 5. **分尺寸布局**：小号突出出门建议；中号增加查询时近三班；大号上下展示上班和回家，每个场景独立刷新。通勤组件隐藏版本等调试信息，在设置内查看。
 6. **配置分享**：复制场景配置码，接收者粘贴后先校验、预览，再选择保存或覆盖哪个场景。只导出配置，不包含班次缓存。
 
-详见 [通勤使用说明与判断边界](./COMMUTE.md)。原有候车计时继续保留：**旧格式参数仍显示候车组件**；通勤组件使用 `scene:work` / `scene:home`。两类组件可同时使用。
+详见 [通勤使用说明与判断边界](./COMMUTE.md)。当前 1.4.0 默认候车倒计时，通勤建议改用 `commute:work` / `commute:home` 显式选择。两类组件可同时使用。
 
 新通勤自动模式每个场景最多 4 张建议卡、3 个遮罩，不增加到每秒更新一层；沿用 1.2.2 的置顶按钮和点击边界。推荐在查询满 5 分钟时停止；兼容模式保持查询时画面，需在出门截止或有效期后刷新。
 
@@ -49,7 +59,7 @@
 - 桌面展示相同状态、快车标记、到发时间和数据来源；锁屏为选定单班展示预计到达，以及有条件显示的预计发车倒计时。
 - 复制小组件参数功能保留。
 
-**验证范围：** 63 项 Node 自动测试、TS/TSX 语法、纯数据模块严格类型及入口依赖检查通过。覆盖原有协议/计时/按钮检查、三种尺寸的通勤组件、双场景独立刷新与相同车站请求复用、推荐截止/过期、目的站边界、配置校验与隔离，以及真实页面处理函数的“引导 → 保存 → 预览 → 分享 → 预览导入 → 保存”完整流程。新增检查过滤区域边界、单次渲染中各状态的覆盖关系及旧参数跳过场景读取。用户已反馈 1.2.1 恢复显示；**本地测试不模拟 iOS 原生命中测试、遮罩渲染、像素排版或内存占用，也不等同于 Scripting 原生 API 完整类型检查。1.3.1 仍需 iOS 18/26 实机验证。**
+**验证范围：** 69 项 Node 自动测试、TS/TSX 语法、纯数据模块严格类型及入口依赖检查通过。覆盖协议、停靠判断、三班推算、到站及停站计时、刷新、通勤建议、分享校验与场景隔离；真实页面处理函数覆盖引导、搜索选择、保存、两种组件内容的预览/复制、分享和导入。新增验证保存场景后的默认候车布局、三种尺寸/两种渲染方式、显式通勤参数、独立配置及进入 App 时的场景保留。**本地测试不模拟 iOS 原生命中测试、遮罩渲染、像素排版、键盘或内存占用，也不等同于 Scripting 原生 API 完整类型检查；仍需 iOS 18/26 实机验证。**
 
 ## 导入与更新
 
@@ -61,7 +71,7 @@
 https://github.com/zhou-xc/cqm-cd/tree/scripting/Scripting/MetroMinutes
 ```
 
-只导入这个子目录。它包含 `script.json`、`index.tsx` 和 `widget.tsx`，无需 npm 安装、编译或自己签名。更新到 **1.3.1** 后运行 **MetroMinutes**；候车组件底部或设置页可核对版本。已有显示模式、旧站点偏好、旧组件参数和缓存继续使用，新安装默认兼容模式。系统重新加载可能延迟。
+只导入这个子目录。它包含 `script.json`、`index.tsx` 和 `widget.tsx`，无需 npm 安装、编译或自己签名。更新到 **1.4.0** 后运行 **MetroMinutes**；候车组件底部或设置页可核对版本。已有兼容 / 自动选择、站点偏好、场景和缓存继续使用，新安装默认兼容模式。组件内容默认候车倒计时，系统重新加载可能延迟。
 
 验证桌面交互时，在自动模式点击刷新图标，预期留在桌面，获得新响应后底部查询时间更新；点击图标周围的按钮区域也应刷新。点击其他主体区域进入脚本。预览不能替代此桌面点击验证。
 
@@ -71,8 +81,8 @@ https://github.com/zhou-xc/cqm-cd/tree/scripting/Scripting/MetroMinutes
 
 1. 运行 **MetroMinutes**，按四步引导保存场景，或“稍后设置”继续查看旧站点的到站数据。
 2. 在看板切换 **上班 / 回家**；未配置的场景会进入引导。编辑其中一个不会覆盖另一个。
-3. 点 **添加桌面组件**，预览尺寸并复制场景组件配置，再按页面说明添加。参数留空跟随当前场景；`scene:work` / `scene:home` 固定绑定一个场景。
-4. 要保留候车到达/发车计时，在 **显示设置与锁屏计时 → 复制候车组件参数**，贴到另一个组件。旧格式参数继续有效。
+3. 点 **添加桌面组件**，默认选择候车倒计时，预览尺寸后复制参数。参数留空跟随当前站点或场景；`scene:work` / `scene:home` 绑定场景并显示候车倒计时。无需配置通勤场景也能添加。
+4. 需要出门建议时，将 **组件内容** 改为 **通勤建议**，复制 `commute:work` / `commute:home` 参数到对应组件。此选择只决定复制、预览的内容，不改变其他桌面组件。
 5. 分享使用 **分享 / 导入通勤配置**。锁屏使用 **显示设置与锁屏计时 → 跟踪当前班次（锁屏）**，仍只跟踪单班。
 
 手动参数示例（也可使用完整配置 JSON）：
@@ -147,3 +157,4 @@ npm run smoke
 - Scripting：[Widget API](https://scriptingapp.github.io/guide/Widget/Widget%20API.md)、[时间标签](https://scriptingapp.github.io/guide/Views/Time-based%20label%20views.md)、[生命周期](https://scriptingapp.github.io/guide/View%20Modifiers/Lifecycle%20Events.md)、[LiveActivity](https://scriptingapp.github.io/guide/LiveActivity.md)、[Pasteboard](https://scriptingapp.github.io/guide/Device%20Capabilities/Pasteboard.md)
 - 时间遮罩：[ProgressView](https://scriptingapp.github.io/guide/Views/Controls/ProgressView/)、[mask](https://scriptingapp.github.io/guide/View%20Modifiers/mask)、[scaleEffect](https://scriptingapp.github.io/guide/View%20Modifiers/scaleEffect)、[颜色与滤镜](https://scriptingapp.github.io/guide/View%20Modifiers/Color%20%26%20Filter%20Effects)
 - 点击边界：[contentShape](https://scriptingapp.github.io/guide/View%20Modifiers/contentShape)、[Shape](https://scriptingapp.github.io/guide/Types/Shape)、[ZStack](https://scriptingapp.github.io/guide/Views/Layout/ZStack/)、[AppIntent](https://scriptingapp.github.io/guide/AppIntent)
+- 目的站选择：[列表内搜索](https://scriptingapp.github.io/guide/Views/Search/)、[选择面板](https://scriptingapp.github.io/guide/Views/Modal%20presentaions/)

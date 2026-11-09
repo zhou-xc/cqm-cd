@@ -2,8 +2,9 @@ import core, { STATIONS, type Preferences } from "./core";
 import { display, type Result, type DisplayTrain } from "./data";
 import { THROUGH_STOPS, RAPID_STOPS } from "./timetable";
 
-export const VERSION = "1.3.1";
+export const VERSION = "1.4.0";
 export type SceneID = "work" | "home";
+export type WidgetContent = "waiting" | "commute";
 export const sceneName = (id: SceneID) => id === "work" ? "上班" : "回家";
 export type Scene = { version: 1; id: SceneID; preferences: Preferences; destination: string;
   walkMinutes: number; entryMinutes: number; bufferMinutes: number; ready: boolean };
@@ -53,7 +54,17 @@ export function recommendedScene(book: SceneBook, now: number): SceneID | null {
   const id = hour >= 14 || hour < 4 ? "home" : "work";
   return book.scenes[id] && id !== book.active ? id : null;
 }
-export const bindScene = (id: SceneID) => `scene:${id}`;
+export const bindScene = (id: SceneID, content: WidgetContent = "waiting") => `${content === "commute" ? "commute" : "scene"}:${id}`;
+// Content is explicit per widget. Saving a commute profile must never turn a
+// default waiting widget into departure advice, or change another widget.
+export function widgetSelection(input: unknown): { content: WidgetContent; parameter: string } {
+  const raw = input == null ? "" : String(input).trim();
+  if (!raw.startsWith("commute:")) return { content: "waiting", parameter: raw };
+  const key = raw.slice(8);
+  if (key === "work" || key === "home") return { content: "commute", parameter: `scene:${key}` };
+  if (key.startsWith("CQMETRO1:")) return { content: "commute", parameter: key };
+  throw Error("通勤建议参数无效，请在 App 的添加桌面组件中重新复制");
+}
 export const shareScene = (scene: Scene) => "CQMETRO1:" + encodeURIComponent(JSON.stringify(validateScene(scene)));
 export function importScene(text: string): Scene {
   const raw = text.trim();
@@ -62,7 +73,7 @@ export function importScene(text: string): Scene {
   catch (e) { throw Error(`配置码无法导入：${e instanceof Error ? e.message : String(e)}`); }
 }
 export function resolveScene(input: unknown, book: SceneBook, fallback: Preferences): Scene {
-  const raw = input == null ? "" : String(input).trim();
+  const { parameter: raw } = widgetSelection(input);
   if (!raw) return book.scenes[book.active] ?? draftScene(fallback, book.active);
   if (raw.startsWith("CQMETRO1:")) return importScene(raw);
   if (raw.startsWith("scene:")) {
@@ -73,7 +84,7 @@ export function resolveScene(input: unknown, book: SceneBook, fallback: Preferen
     return scene;
   }
   // Legacy parameters deliberately remain a waiting-at-station widget.
-  return draftScene(core.resolveParameter(input, fallback));
+  return draftScene(core.resolveParameter(raw, fallback));
 }
 export type Reachability = { state: "yes" | "no" | "unknown"; label: string };
 const reach = (state: Reachability["state"], label: string): Reachability => ({ state, label });

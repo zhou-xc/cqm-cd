@@ -1,6 +1,6 @@
 import core from "./core";
 import { savedPreferences, savePreferences } from "./service";
-import { draftScene, readBook, validateScene, resolveScene, type Scene, type SceneID, type SceneBook } from "./commute";
+import { draftScene, readBook, validateScene, resolveScene, widgetSelection, type Scene, type SceneID, type SceneBook } from "./commute";
 const KEY = "cqmetro.scenes.v1";
 export function savedScenes(): SceneBook {
   try { return readBook(Storage.get(KEY)); } catch { return readBook(null); }
@@ -21,11 +21,11 @@ export function finishOnboarding() {
   const book = savedScenes(); book.onboarded = true; Storage.set(KEY, book);
 }
 export function currentScene(parameter: unknown): Scene {
-  const raw = parameter == null ? "" : String(parameter).trim();
+  const { parameter: raw } = widgetSelection(parameter);
   const fallback = savedPreferences();
   // Explicit waiting-widget parameters do not need to read/validate profiles.
   if (raw && !raw.startsWith("CQMETRO1:") && !raw.startsWith("scene:")) {
-    return draftScene(core.resolveParameter(parameter, fallback));
+    return draftScene(core.resolveParameter(raw, fallback));
   }
-  return resolveScene(parameter, savedScenes(), fallback);
+  return resolveScene(raw, savedScenes(), fallback);
 }
