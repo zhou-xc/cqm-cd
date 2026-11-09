@@ -2,7 +2,7 @@ import core, { STATIONS, type Preferences } from "./core";
 import { display, type Result, type DisplayTrain } from "./data";
 import { THROUGH_STOPS, RAPID_STOPS } from "./timetable";
 
-export const VERSION = "1.4.0";
+export const VERSION = "1.4.1";
 export type SceneID = "work" | "home";
 export type WidgetContent = "waiting" | "commute";
 export const sceneName = (id: SceneID) => id === "work" ? "上班" : "回家";

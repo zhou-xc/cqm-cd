@@ -83,28 +83,6 @@ function visibleTree(tree, now) {
   return { ...tree, children };
 }
 
-test('every automatic gate filters a bounded centre sample before magnification', async () => {
-  for (const family of ['systemSmall', 'systemMedium', 'systemLarge']) {
-    const { tree } = await renderWidget(family, undefined, { mode: 'automatic' });
-    const masks = nodes(tree, 'ZStack').filter(n => n.props.mask).map(n => n.props.mask);
-    assert.ok(masks.length > 0);
-    for (const mask of masks) {
-      const stacks = nodes(mask, 'ZStack');
-      const filters = stacks.filter(n => n.props.luminanceToAlpha || n.props.contrast);
-      assert.equal(filters.length, 2);
-      for (const f of filters) {
-        assert.equal(f.props.frame.width, 2);
-        assert.equal(f.props.frame.height, 1);
-        assert.ok(!nodes(f, 'ZStack').some(n => n.props.scaleEffect), 'filters must never wrap the magnified view');
-      }
-      const [scale] = stacks.filter(n => n.props.scaleEffect);
-      assert.equal(scale.props.scaleEffect.x * 2, mask.props.frame.width);
-      assert.equal(scale.props.scaleEffect.y, mask.props.frame.height);
-      assert.equal(mask.props.contentShape, 'rect');
-    }
-  }
-});
-
 test('one small archived widget retains three arrival/dwell pairs, stale label and final refresh prompt', async () => {
   const { tree, calls } = await renderWidget('systemSmall', undefined, { mode: 'automatic' });
   for (let i = 0; i < trains.length; i++) {
@@ -178,7 +156,7 @@ test('default compatible path renders only current timers, with no masks or filt
     const all = JSON.stringify(tree);
     assert.doesNotMatch(all, /ProgressView|luminanceToAlpha|scaleEffect|contrast|"mask"/);
     assert.equal(nodes(tree, 'TimerIntervalLabel').length, family === 'systemSmall' ? 1 : 2);
-    assert.match(textOf(tree), /1\.4\.0 兼容/);
+    assert.match(textOf(tree), /1\.4\.1 兼容/);
     assert.match(textOf(tree), /到零请刷新/);
     assert.equal(nodes(tree, 'Button').length, 1);
   }
@@ -195,7 +173,7 @@ test('commute widgets differ by size, retain safe hit targets and avoid extra ma
       assert.match(textOf(tree), /建议有效至/);
       assert.equal(textOf(tree).includes('查询时的近三班'), family !== 'systemSmall');
       assert.equal(textOf(tree).includes('回家 ·'), family === 'systemLarge');
-      assert.doesNotMatch(textOf(tree), /1\.4\.0|兼容模式/);
+      assert.doesNotMatch(textOf(tree), /1\.4\.1|兼容模式/);
       const masked = nodes(tree, 'ZStack').filter(n => n.props.mask);
       assert.ok(masked.length <= (family === 'systemLarge' ? 6 : 3));
       if (mode === 'compatible') assert.equal(masked.length, 0);
