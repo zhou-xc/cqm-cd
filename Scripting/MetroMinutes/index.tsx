@@ -113,7 +113,7 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
           await Dialog.alert({ title: "参数已复制", message: "长按桌面小组件 → 编辑小组件，将参数粘贴到参数栏。" });
         })} />
       <Text font="caption">页面按上次查询的时间推算状态，不代表列车实况。5 分钟后标记旧数据，最长推算 30 分钟；已知班次用完后请刷新。图片时刻按周一至周五/周末匹配，未包含节假日及临时调图。</Text>
-      <Text font="caption">MetroMinutes 1.2.1 · 自动模式的近三班用完后请刷新。锁屏仍展示选中单班。</Text>
+      <Text font="caption">MetroMinutes 1.2.2 · 自动模式的近三班用完后请刷新。锁屏仍展示选中单班。</Text>
     </List>
   </NavigationStack>;
 }

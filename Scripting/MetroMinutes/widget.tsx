@@ -24,9 +24,9 @@ function Arrival({ d, arrived, fetchedAt, large, width, dark }: {
   return <VStack alignment="leading" spacing={1} frame={{ maxWidth: "infinity", alignment: "leading" }}>
     <Text font={large ? 13 : 11} lineLimit={1} minScaleFactor={0.6}>{large ? d.direction : [d.direction, d.current?.assessment.kind].filter(Boolean).join(" · ")}</Text>
     {large && d.service ? <Text font={9} lineLimit={1} minScaleFactor={0.6}>{d.service}</Text> : null}
-    {arrived ? <ZStack frame={{ width, height }} clipped>
+    {arrived ? <ZStack frame={{ width, height }} clipped contentShape="rect">
       <VStack frame={{ width, height, alignment: "topLeading" }}><Timing d={d} fetchedAt={fetchedAt} large={large} /></VStack>
-      <ZStack frame={{ width, height }} mask={<TimeGate at={arrived.at} width={width} height={height} />}>
+      <ZStack frame={{ width, height }} contentShape="rect" mask={<TimeGate at={arrived.at} width={width} height={height} />}>
         <Rectangle fill={dark ? "#171717" : "#FAFAFA"} frame={{ width, height }} />
         <VStack frame={{ width, height, alignment: "topLeading" }}><Timing d={arrived.view} fetchedAt={fetchedAt} large={large} /></VStack>
       </ZStack>
@@ -58,9 +58,9 @@ function ArrivalDeck({ p, result, dir, now, width, height, large, automatic }: {
   const label = d.source || (d.phase === "expired" ? "已停止推算" : "请刷新获取班次");
   // Three train cards + one terminal card, as in the demo. Within each train,
   // only the small timer/status region changes at arrival. Controls stay outside.
-  return <VStack alignment="leading" spacing={1} frame={{ width }}>
-    <ZStack frame={{ width, height }} clipped>
-    {cards.map((frame, i) => <ZStack key={`${dir}:${frame.at}`} frame={{ width, height }}
+  return <VStack alignment="leading" spacing={1} frame={{ width }} contentShape="rect">
+    <ZStack frame={{ width, height }} clipped contentShape="rect">
+    {cards.map((frame, i) => <ZStack key={`${dir}:${frame.at}`} frame={{ width, height }} contentShape="rect"
       mask={i ? <TimeGate at={frame.at} width={width} height={height} /> : undefined}>
       <Rectangle fill={p.dark ? "#171717" : "#FAFAFA"} frame={{ width, height }} />
       <VStack frame={{ width, height, alignment: "topLeading" }}>
@@ -68,9 +68,9 @@ function ArrivalDeck({ p, result, dir, now, width, height, large, automatic }: {
       </VStack>
     </ZStack>)}
     </ZStack>
-    {d.usable && now < staleAt ? <ZStack frame={{ width, height: 10 }} clipped>
+    {d.usable && now < staleAt ? <ZStack frame={{ width, height: 10 }} clipped contentShape="rect">
       <VStack frame={{ width, height: 10, alignment: "leading" }}>{source(label)}</VStack>
-      <ZStack frame={{ width, height: 10 }} mask={<TimeGate at={staleAt} width={width} height={10} />}>
+      <ZStack frame={{ width, height: 10 }} contentShape="rect" mask={<TimeGate at={staleAt} width={width} height={10} />}>
         <Rectangle fill={p.dark ? "#171717" : "#FAFAFA"} frame={{ width, height: 10 }} />
         <VStack frame={{ width, height: 10, alignment: "leading" }}>{source(`${result.error ? "刷新失败 · " : ""}旧数据推算`)}</VStack>
       </ZStack>
@@ -90,10 +90,12 @@ async function main() {
     const contentWidth = Math.max(110, Widget.displaySize.width - 24);
     const cardWidth = small ? contentWidth : (contentWidth - 12) / 2;
     const cardHeight = large ? Math.max(130, Math.min(170, Widget.displaySize.height - 110)) : 66;
+    const refreshWidth = small ? 44 : 76;
     const open = Script.createRunURLScheme(Script.name, { parameter: core.parameter(p) });
     const refresh = <Button intent={RefreshArrival(core.parameter(p))} buttonStyle="plain"
+      frame={{ width: refreshWidth, height: 44 }} contentShape="rect"
       accessibilityLabel="刷新到站信息" accessibilityHint="重新查询班次并更新组件">
-      <HStack spacing={4} frame={{ minWidth: 44, minHeight: 44 }}>
+      <HStack spacing={4} frame={{ width: refreshWidth, height: 44 }} contentShape="rect">
         <Image systemName="arrow.clockwise" font={20} />
         {!small ? <Text font={12}>刷新</Text> : null}
       </HStack>
@@ -102,21 +104,26 @@ async function main() {
       <VStack frame={{ maxWidth: "infinity", maxHeight: "infinity", alignment: "center" }}
         widgetBackground={p.dark ? "#171717" : "#FAFAFA"}
         foregroundStyle={p.dark ? "white" : "black"} widgetURL={open}>
-        <VStack alignment="leading" spacing={2} padding={12}>
+        <ZStack alignment="topTrailing" padding={12}>
+        <VStack alignment="leading" spacing={2}>
           <HStack spacing={5}>
             <VStack alignment="leading" spacing={1} frame={{ maxWidth: "infinity", alignment: "leading" }}>
               <Text font={small ? 16 : 20} fontWeight="semibold" lineLimit={1} minScaleFactor={0.6}>{d.station.stationName}</Text>
               <Text font={10} lineLimit={1}>{d.station.lineName}</Text>
             </VStack>
-            {refresh}
+            <HStack frame={{ width: refreshWidth, height: 44 }} />
           </HStack>
-          <HStack alignment="top" spacing={12}>
+          <HStack alignment="top" spacing={12} frame={{ width: contentWidth }} contentShape="rect">
             <ArrivalDeck p={p} result={result} dir={p.direction} now={now} width={cardWidth} height={cardHeight} large={large} automatic={automatic} />
             {!small ? <ArrivalDeck p={p} result={result} dir={p.direction === "up" ? "down" : "up"}
               now={now} width={cardWidth} height={cardHeight} large={large} automatic={automatic} /> : null}
           </HStack>
-          <Text font={8} lineLimit={1} minScaleFactor={0.6}>{`查询 ${d.queried} · 1.2.1 ${automatic ? "自动" : "兼容"}`}</Text>
+          <Text font={8} lineLimit={1} minScaleFactor={0.6}>{`查询 ${d.queried} · 1.2.2 ${automatic ? "自动" : "兼容"}`}</Text>
         </VStack>
+        {/* Clip/mask only governs drawing. Keep the hit target above every
+            magnified time layer, with an explicit rectangular button label. */}
+        {refresh}
+        </ZStack>
       </VStack>,
       { policy: "after", date: new Date(nextWidgetReload(result, now)) },
     );

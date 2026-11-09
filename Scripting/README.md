@@ -2,13 +2,20 @@
 
 将 [`MetroMinutes`](./MetroMinutes) 导入 iPhone 的 Scripting App。原生 Swift 项目仍保留在仓库中，本页说明脚本版。
 
-## 1.2.1
+## 1.2.2
+
+- 针对“自动切班（精简版）点刷新却打开 App，兼容模式正常”的反馈，给放大的时间遮罩、计时区域和卡片补上矩形 `contentShape`，明确限定交互边界；原有 `clipped`/`mask` 用于控制显示。
+- 刷新按钮移到整个内容之上的独立层，小号点击区域固定为 44 × 44，中/大号为 76 × 44，并给按钮标签设置完整矩形点击范围。原位置预留相同空间，维持布局。
+- 两种模式继续绑定同一个 `CQMetroRefreshArrival`：先强制查询，再申请重载。没有把刷新改成打开 App；点击主体仍可进入设置。保留已选择的显示模式，不重置参数。
+- 这是针对代码交互边界遗漏的修正。反馈与遮罩抢占点击区域吻合，但尚无实机点击日志，不将推测当作已证实的系统原因。
+
+## 1.2.1 的兼容模式与精简布局
 
 - 针对用户在 iOS 18 / iOS 26 上反馈的桌面白屏，增加默认的 **兼容模式**：每个方向仅展示当前班次，不构建遮罩、滤镜和未来画面。原生倒计时仍会走，到零后请刷新；状态和选班在系统或手动重新加载组件时更新。
 - 保留可选 **自动切班（精简版）**。沿用用户已验证的 Demo 遮罩写法，每方向从最多 15 张完整状态画面缩减为 **最多三张班次卡 + 一张结束提示**。到站只切换小块倒计时/状态区域；不再为“即将到达”“即将发车”复制整张卡片。这两类提示继续在 App 页面中显示。
 - 自动模式最多预建 6 个倒计时、7 个遮罩/方向，其中完整卡片遮罩最多 3 个。停靠待确认或缺失发车时间的班次不生成发车倒计时。小号仅展示所选方向，中号/大号展示双向。
 - 自动模式用单独一行切换 5 分钟旧数据提示；三班用完或数据满 30 分钟时覆盖计时区域并提示刷新，以先到者为准。结束提示持续保留，不循环、不外推第四班。
-- App 的“桌面显示模式”可恢复已经白屏的组件，设置应用于本机所有 MetroMinutes 组件，不改动站点参数。底部显示 **1.2.1 兼容 / 自动**，便于核对更新是否生效。
+- App 的“桌面显示模式”可恢复已经白屏的组件，设置应用于本机所有 MetroMinutes 组件，不改动站点参数。底部显示版本号及 **兼容 / 自动**，便于核对更新是否生效。
 - 刷新按钮仍在遮罩层外。手动刷新重新查询，切换显示模式只保存设置并申请重新加载，不额外请求接口。
 
 已有功能继续保留：
@@ -20,7 +27,7 @@
 - 桌面展示相同状态、快车标记、到发时间和数据来源；锁屏为选定单班展示预计到达，以及有条件显示的预计发车倒计时。
 - 复制小组件参数功能保留。
 
-**验证范围：** 46 项 Node 自动测试、TS/TSX 语法、纯数据模块严格类型及入口依赖检查通过。覆盖精简三班画面的逐秒选班/计时核对、兼容模式不生成遮罩/滤镜、自动模式计时与遮罩数量、模式恢复和头塘真实响应的组件渲染。用户已反馈 [MetroTimeGateDemo](../MetroTimeGateDemo) 正常，但 1.2.0 正式组件会白屏；**目前没有崩溃或内存日志，不能断言白屏是内存超限，也不能断言与 iOS 版本有关。** 1.2.1 的原生渲染、内存占用及 iOS 18/26 上的恢复效果仍需实机验证；这些测试不模拟 iOS 遮罩渲染，也不等同于 Scripting 原生 API 完整类型检查。
+**验证范围：** 47 项 Node 自动测试、TS/TSX 语法、纯数据模块严格类型及入口依赖检查通过。覆盖精简三班画面的逐秒选班/计时核对、两种模式及三种尺寸的按钮层级/点击边界、实际 AppIntent 的强制查询与重载顺序、模式恢复和头塘真实响应。用户已反馈 [MetroTimeGateDemo](../MetroTimeGateDemo) 正常，1.2.1 已恢复显示，但精简模式点击刷新会打开 App。没有崩溃、内存或点击日志，不能断言系统原因。**本地测试不模拟 iOS 原生命中测试、遮罩渲染或内存占用，也不等同于 Scripting 原生 API 完整类型检查；1.2.2 的桌面点击效果仍需实机验证。**
 
 ## 导入与更新
 
@@ -32,7 +39,9 @@
 https://github.com/zhou-xc/cqm-cd/tree/scripting/Scripting/MetroMinutes
 ```
 
-只导入这个子目录。它包含 `script.json`、`index.tsx` 和 `widget.tsx`，无需 npm 安装、编译或自己签名。更新到 **1.2.1** 后，运行 **MetroMinutes**，先使用默认“兼容模式”，点击“刷新到站信息”，核对桌面底部的 **1.2.1 兼容**。系统重新加载可能延迟。已有站点偏好、组件参数和缓存继续使用。
+只导入这个子目录。它包含 `script.json`、`index.tsx` 和 `widget.tsx`，无需 npm 安装、编译或自己签名。更新到 **1.2.2** 后，运行 **MetroMinutes**，在 App 内点击“刷新到站信息”让桌面加载新代码，核对底部版本为 **1.2.2**。已有显示模式、站点偏好、组件参数和缓存继续使用，新安装默认兼容模式；系统重新加载可能延迟。
+
+核对本次修复时，在自动模式点击桌面右上角刷新图标，预期留在桌面，获得新响应后底部查询时间更新；点击图标周围的按钮区域也应刷新。点击其他主体区域仍应打开设置。预览不能替代此桌面点击验证。
 
 正常显示后，在 App 中将“桌面显示模式”设为“自动切班（精简版）”，观察切班及发车倒计时。如果变白，从 App 切回“兼容模式”即可申请恢复，不依赖白屏组件内的按钮；若系统仍保留旧快照，可移除并重新添加该桌面组件。两台手机分别操作、分别验证。Demo 目录保持不变。
 
@@ -115,3 +124,4 @@ npm run smoke
 - [旧页面处理](https://ycx.cqmetro.cn/app-h5/msx-metro-pis/static/js/3.2b2f1907abcc7f6a30ac.js)、[文案 / 路由](https://ycx.cqmetro.cn/app-h5/msx-metro-pis/static/js/app.b83dfb359e9613d94dff.js)、[V2 页面](https://ycx.cqmetro.cn/app-h5/msx-metro-pis/static/js/1.80b5de9e3ac54d1f0cfa.js)
 - Scripting：[Widget API](https://scriptingapp.github.io/guide/Widget/Widget%20API.md)、[时间标签](https://scriptingapp.github.io/guide/Views/Time-based%20label%20views.md)、[生命周期](https://scriptingapp.github.io/guide/View%20Modifiers/Lifecycle%20Events.md)、[LiveActivity](https://scriptingapp.github.io/guide/LiveActivity.md)、[Pasteboard](https://scriptingapp.github.io/guide/Device%20Capabilities/Pasteboard.md)
 - 时间遮罩：[ProgressView](https://scriptingapp.github.io/guide/Views/Controls/ProgressView/)、[mask](https://scriptingapp.github.io/guide/View%20Modifiers/mask)、[scaleEffect](https://scriptingapp.github.io/guide/View%20Modifiers/scaleEffect)、[颜色与滤镜](https://scriptingapp.github.io/guide/View%20Modifiers/Color%20%26%20Filter%20Effects)
+- 点击边界：[contentShape](https://scriptingapp.github.io/guide/View%20Modifiers/contentShape)、[Shape](https://scriptingapp.github.io/guide/Types/Shape)、[ZStack](https://scriptingapp.github.io/guide/Views/Layout/ZStack/)、[AppIntent](https://scriptingapp.github.io/guide/AppIntent)

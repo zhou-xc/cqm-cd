@@ -5,7 +5,9 @@ import { Group, ProgressView, Rectangle, ZStack } from "scripting";
 // This is a visual reveal, not a callback or a WidgetKit timeline submission.
 // Keep the 2-second interval and magnified centre used in that device test.
 export function TimeGate({ at, width, height }: { at: number; width: number; height: number }) {
-  return <ZStack frame={{ width, height }} luminanceToAlpha>
+  // Keep interaction bounds local too; the magnified progress view extends
+  // beyond the card even though its rendered output is clipped.
+  return <ZStack frame={{ width, height }} contentShape="rect" luminanceToAlpha>
     <ZStack frame={{ width, height }} contrast={100}>
       <ZStack frame={{ width, height }} clipped environments={{ colorScheme: "dark", layoutDirection: "leftToRight" }}>
         <Rectangle fill="black" frame={{ width, height }} />

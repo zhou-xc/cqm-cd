@@ -19,25 +19,31 @@ const snapshot = { version: 2, stationID: p.stationID, lineID: p.lineID, fetched
 async function renderWidget(family, result = { snapshot, error: null }, options = {}) {
   const preferences = options.preferences ?? p;
   const now = options.now ?? base;
+  const calls = [];
   let capture;
   const presented = new Promise(resolve => { capture = resolve; });
   const scripting = Object.fromEntries(['Button', 'Group', 'HStack', 'Image', 'ProgressView', 'Rectangle',
     'Text', 'TimerIntervalLabel', 'VStack', 'ZStack'].map(name => [name, name]));
   scripting.Script = { name: 'MetroMinutes', createRunURLScheme: () => 'scripting://test' };
+  scripting.AppIntentProtocol = { AppIntent: 0 };
+  scripting.AppIntentManager = { register: config => parameter => ({ name: config.name, parameter,
+    perform: () => config.perform(parameter) }) };
   scripting.Widget = { parameter: '', family, displaySize: { width: family === 'systemSmall' ? 170 : 360,
-    height: family === 'systemLarge' ? 380 : 170 }, present: (tree, policy) => capture({ tree, policy }) };
+    height: family === 'systemLarge' ? 380 : 170 }, present: (tree, policy) => capture({ tree, policy, calls }),
+    reloadAll: () => calls.push({ type: 'reload' }) };
   const cache = new Map([
     ['./core', { default: core }], ['./data', data], ['./widget_timeline', timeline], ['scripting', scripting],
-    ['./service', { savedPreferences: () => preferences, query: async () => result,
+    ['./service', { savedPreferences: () => preferences, query: async (p, force = false) => {
+      calls.push({ type: 'query', parameter: core.parameter(p), force }); return result;
+    },
       savedWidgetRendering: () => options.mode ?? 'compatible' }],
-    ['./app_intents', { RefreshArrival: parameter => ({ parameter }) }],
   ]);
   const createElement = (type, props, ...children) => typeof type === 'function'
     ? type({ ...props, children: children.flat(Infinity) }) : { type, props: props ?? {}, children: children.flat(Infinity) };
   const context = vm.createContext({ Date: class extends Date { static now() { return now; } }, createElement });
   function requireModule(name) {
     if (cache.has(name)) return cache.get(name);
-    assert.ok(['./widget', './time_gate', './countdown'].includes(name), `unexpected module ${name}`);
+    assert.ok(['./widget', './time_gate', './countdown', './app_intents'].includes(name), `unexpected module ${name}`);
     const source = readFileSync(new URL(`../MetroMinutes/${name.slice(2)}.tsx`, import.meta.url), 'utf8');
     const { outputText } = ts.transpileModule(source, { compilerOptions: {
       target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, jsxFactory: 'createElement',
@@ -103,9 +109,43 @@ test('default compatible path renders only current timers, with no masks or filt
     const all = JSON.stringify(tree);
     assert.doesNotMatch(all, /ProgressView|luminanceToAlpha|scaleEffect|contrast|"mask"/);
     assert.equal(nodes(tree, 'TimerIntervalLabel').length, family === 'systemSmall' ? 1 : 2);
-    assert.match(textOf(tree), /1\.2\.1 兼容/);
+    assert.match(textOf(tree), /1\.2\.2 兼容/);
     assert.match(textOf(tree), /到零请刷新/);
     assert.equal(nodes(tree, 'Button').length, 1);
+  }
+});
+
+test('refresh is above all time layers, has full hit bounds, and invokes the same forced query in both modes', async () => {
+  for (const mode of ['automatic', 'compatible']) {
+    for (const family of ['systemSmall', 'systemMedium', 'systemLarge']) {
+      const { tree, calls } = await renderWidget(family, undefined, { mode });
+      const buttons = nodes(tree, 'Button');
+      assert.equal(buttons.length, 1);
+      const [button] = buttons;
+      const host = nodes(tree, 'ZStack').find(n => n.children.includes(button));
+      assert.ok(host, 'button must be a sibling above the display tree');
+      assert.equal(host.children.filter(Boolean).at(-1), button);
+      assert.equal(host.props.alignment, 'topTrailing');
+      assert.equal(nodes(host.children[0], 'Button').length, 0);
+      for (const target of [button, button.children[0]]) {
+        assert.equal(target.props.contentShape, 'rect');
+        assert.ok(target.props.frame.width >= 44);
+        assert.equal(target.props.frame.height, 44);
+      }
+      const masked = nodes(host.children[0], 'ZStack').filter(n => n.props.mask);
+      assert.equal(masked.length > 0, mode === 'automatic');
+      for (const layer of masked) {
+        assert.equal(layer.props.contentShape, 'rect');
+        assert.equal(layer.props.mask.props.contentShape, 'rect');
+      }
+      assert.equal(button.props.intent.name, 'CQMetroRefreshArrival');
+      assert.equal(button.props.intent.parameter, core.parameter(p));
+      assert.equal(button.props.action, undefined);
+      assert.equal(button.props.widgetURL, undefined);
+      await button.props.intent.perform();
+      assert.deepEqual(calls.map(c => [c.type, c.force]), [['query', false], ['query', true], ['reload', undefined]]);
+      assert.ok(calls.filter(c => c.type === 'query').every(c => c.parameter === core.parameter(p)));
+    }
   }
 });
 
