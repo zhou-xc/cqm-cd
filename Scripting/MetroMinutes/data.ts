@@ -81,12 +81,3 @@ export function display(p: Preferences, result: Result, now = Date.now(), dir: D
     status, source, previous, bounds, phase, targetTime, timerLabel, fresh: !!fresh, usable,
     service: current?.assessment.label ?? "", evidence: current?.assessment.evidence ?? "" };
 }
-
-// Host repaint request, not a network schedule or a guarantee of prompt redraw.
-export function nextTransition(p: Preferences, result: Result, now: number) {
-  const s = result.snapshot;
-  if (!s || s.stationID !== p.stationID || s.lineID !== p.lineID) return now + 60000;
-  const times = [now + 60000, s.fetchedAt + core.MAX_AGE, s.fetchedAt + INFERENCE_AGE];
-  for (const t of [...s.up, ...s.down]) times.push(t.arrival - 30000, t.arrival, t.departure - 15000, trainEnd(t));
-  return Math.max(now + 1000, Math.min(...times.filter(t => Number.isFinite(t) && t > now)));
-}

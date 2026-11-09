@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import core from '../MetroMinutes/core.js';
 import { loadModule } from './modules.mjs';
 const { assess, PROFILES } = await loadModule('timetable.ts');
-const { display, load, nextTransition, INFERENCE_AGE } = await loadModule('data.ts');
+const { display, load, INFERENCE_AGE } = await loadModule('data.ts');
 const at = time => Date.parse('2026-11-09T' + time + '+08:00');
 const preferences = text => core.resolveParameter(text, core.preferences());
 function train(arrival, departure, extra = {}) {
@@ -141,9 +141,4 @@ test('five-minute cache avoids HTTP during state changes, failures keep original
   assert.equal(calls, 2); assert.equal(failed.snapshot.fetchedAt, base);
   assert.match(display(p, failed, now).source, /刷新失败 · 旧数据推算/);
   await load(p, true, io); assert.equal(calls, 3);
-});
-
-test('host refresh requests include exact arrival and departure state boundaries', () => {
-  assert.equal(nextTransition(p, result, at('08:01:31')), known[0].arrival);
-  assert.equal(nextTransition(p, result, at('08:02:50')), known[0].departure);
 });
