@@ -54,20 +54,33 @@ const MetroCore = (() => {
   }
   function normalize(values, now) {
     if (!Array.isArray(values)) throw new Error("到站列表格式发生变化");
-    const seen = new Set();
+    const seen = new Map();
     return values.flatMap(t => {
-      // The official H5 displays skip_stop_flag=2 records too. Its public API has
-      // no documented mapping that lets us treat this flag as "does not stop".
+      // Legacy H5 labels 2 as non-stopping; V2 ignores it. Preserve the flag
+      // for timetable/route assessment instead of deleting the whole record.
       if (!t) return [];
       const arrival = parseDate(t.arrival_time);
       if (arrival === null) return [];
-      const departure = Math.max(parseDate(t.departure_time) ?? arrival, arrival);
-      if (departure <= now) return [];
+      const parsedDeparture = parseDate(t.departure_time);
+      const departureKnown = parsedDeparture !== null && parsedDeparture >= arrival;
+      const departure = departureKnown ? parsedDeparture : arrival;
+      if (departureKnown ? departure <= now : arrival + 60000 <= now) return [];
       const destination = String(t.destination || t.terminal_station_name || "方向待确认");
       const id = arrival + ":" + destination;
-      if (seen.has(id)) return [];
-      seen.add(id);
-      return [{ arrival, departure, destination }];
+      const flag = typeof t.skip_stop_flag === "number" || (typeof t.skip_stop_flag === "string" && t.skip_stop_flag.trim())
+        ? Number(t.skip_stop_flag) : NaN;
+      const skipStopFlag = Number.isFinite(flag) ? flag : null;
+      const duplicate = seen.get(id);
+      if (duplicate) {
+        if (skipStopFlag === 2) duplicate.skipStopFlag = 2;
+        if (departureKnown && (!duplicate.departureKnown || departure > duplicate.departure)) {
+          duplicate.departure = departure; duplicate.departureKnown = true;
+        }
+        return [];
+      }
+      const train = { arrival, departure, departureKnown, destination, skipStopFlag };
+      seen.set(id, train);
+      return [train];
     }).sort((a,b) => a.arrival - b.arrival);
   }
   function stationFor(p) {
@@ -178,7 +191,7 @@ const MetroCore = (() => {
     if (!Array.isArray(result.lines)) throw new Error("接口未返回线路列表");
     const line=result.lines.find(l=>l.line_no===p.lineID) || result.lines.find(l=>l.line_name===station.lineName);
     if (!line) throw new Error("接口暂未返回这条线路的到站数据");
-    return {version:1,stationID:p.stationID,lineID:p.lineID,fetchedAt:now,
+    return {version:2,stationID:p.stationID,lineID:p.lineID,fetchedAt:now,
       up:normalize(line.up??[],now),down:normalize(line.down??[],now)};
   }
   function officialURL(p) {

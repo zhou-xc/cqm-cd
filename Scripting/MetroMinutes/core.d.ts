@@ -1,7 +1,7 @@
 export type Direction = "up" | "down";
 export interface Preferences { stationID: string; lineID: string; direction: Direction; mode: "minutes" | "timer"; dark: boolean }
 export interface Station { stationID: string; stationName: string; lineID: string; lineName: string; upLabel: string; downLabel: string }
-export interface Train { arrival: number; departure: number; destination: string }
+export interface Train { arrival: number; departure: number; destination: string; departureKnown: boolean; skipStopFlag: number | null }
 export interface Snapshot { version: number; stationID: string; lineID: string; fetchedAt: number; up: Train[]; down: Train[] }
 export const STATIONS: Station[];
 declare const core: {

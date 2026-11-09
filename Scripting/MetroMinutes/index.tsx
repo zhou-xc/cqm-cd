@@ -5,12 +5,21 @@ import { query, savedPreferences, savePreferences } from "./service";
 import { Countdown } from "./countdown";
 import { endActivity, startOrUpdate } from "./activity";
 
+let pageTimer: ReturnType<typeof setTimeout> | undefined;
+function stopPageClock() { if (pageTimer !== undefined) clearTimeout(pageTimer); pageTimer = undefined; }
+
 function Page({ initial, initialResult }: { initial: Preferences; initialResult: Result }) {
   const dismiss = Navigation.useDismiss();
   const [p, setP] = useState(initial);
   const [result, setResult] = useState(initialResult);
   const [busy, setBusy] = useState(false);
-  const d = display(p, result);
+  const [now, setNow] = useState(Date.now());
+  const d = display(p, result, now);
+  function startPageClock() {
+    stopPageClock();
+    const tick = () => { setNow(Date.now()); pageTimer = setTimeout(tick, 1000); };
+    tick();
+  }
   const lines = Array.from(new Map(STATIONS.map(s => [s.lineID, s.lineName])).entries());
 
   async function run(action: () => Promise<void>) {
@@ -30,7 +39,8 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
   }
 
   return <NavigationStack>
-    <List navigationTitle="重庆轨道到站" toolbar={{ cancellationAction: <Button title="完成" action={dismiss} /> }}>
+    <List navigationTitle="重庆轨道到站" onAppear={startPageClock} onDisappear={stopPageClock}
+      toolbar={{ cancellationAction: <Button title="完成" action={dismiss} /> }}>
       <Picker title="线路" value={p.lineID} pickerStyle="menu" disabled={busy} onChanged={(lineID: string) => {
         const station = STATIONS.find(s => s.lineID === lineID)!;
         change({ ...p, lineID, stationID: station.stationID });
@@ -43,8 +53,8 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
         onChanged={(direction: string) => {
           if (direction === "up" || direction === "down") change({ ...p, direction });
         }}>
-        <Text tag="up">{display(p, result, Date.now(), "up").direction}</Text>
-        <Text tag="down">{display(p, result, Date.now(), "down").direction}</Text>
+        <Text tag="up">{display(p, result, now, "up").direction}</Text>
+        <Text tag="down">{display(p, result, now, "down").direction}</Text>
       </Picker>
       <Picker title="小组件外观" value={p.dark ? "dark" : "light"} pickerStyle="segmented" disabled={busy}
         onChanged={(theme: string) => change({ ...p, dark: theme === "dark" })}>
@@ -52,11 +62,17 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
       </Picker>
       <VStack alignment="leading" spacing={6}>
         <Text font="headline">{d.station.stationName + " · " + d.direction}</Text>
-        {d.trains[0] && result.snapshot ? <Countdown arrival={d.trains[0].arrival} from={result.snapshot.fetchedAt} /> : <Text font="title">--:--</Text>}
+        {d.service ? <Text>{d.service}</Text> : null}
+        {d.targetTime !== null && result.snapshot ? <Countdown key={d.targetTime} arrival={d.targetTime} from={result.snapshot.fetchedAt} /> : !d.current ? <Text font="title">--:--</Text> : null}
+        {d.timerLabel ? <Text font="caption">{d.timerLabel}</Text> : null}
         <Text>{d.status}</Text>
-        <Text font="caption">{`查询 ${d.queried}。倒计时按本次查询估算，到零后请刷新。`}</Text>
+        <Text font="caption">{d.bounds}</Text>
+        <Text font="caption">{`查询 ${d.queried} · ${d.source}`}</Text>
+        {d.previous ? <Text font="caption">{d.previous}</Text> : null}
+        {d.evidence ? <Text font="caption">{d.evidence}</Text> : null}
+        {d.current && d.current.destination !== d.current.assessment.destination ? <Text font="caption">{`接口终点：${d.current.destination}；显示方向按图片交路推断。`}</Text> : null}
         {result.error ? <Text font="caption">{result.error}</Text> : null}
-        {d.trains.slice(1, 4).map(t => <Text key={t.arrival + t.destination}>{`后续 ${core.clock(t.arrival)} · ${t.destination}`}</Text>)}
+        {d.trains.slice(1, 4).map(t => <Text key={t.arrival + t.destination}>{`后续 ${core.clock(t.arrival)} · ${t.assessment.destination} ${t.assessment.label}`}</Text>)}
       </VStack>
       <Button title={busy ? "处理中…" : "刷新到站信息"} systemImage="arrow.clockwise" disabled={busy} buttonStyle="borderless"
         action={() => run(async () => { setResult(await query(p, true)); Widget.reloadAll(); })} />
@@ -65,10 +81,12 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
           const latest = await query(p, true); setResult(latest); Widget.reloadAll();
           const view = display(p, latest);
           if (latest.error) throw new Error(latest.error);
-          if (!latest.snapshot || !view.trains[0] || view.trains[0].arrival <= Date.now()) throw new Error("没有尚未到站的班次，请稍后刷新");
+          if (!latest.snapshot || !view.current || view.targetTime === null) throw new Error("当前没有可用的倒计时，请稍后刷新");
           await startOrUpdate({ station: view.station.stationName, line: view.station.lineName, direction: view.direction,
-            arrival: view.trains[0].arrival, fetchedAt: latest.snapshot.fetchedAt });
-          await Dialog.alert({ title: "已更新实时活动", message: "可锁屏查看本次班次的倒计时；班次变化后在这里重新更新。" });
+            arrival: view.current.arrival, fetchedAt: latest.snapshot.fetchedAt,
+            departure: view.current.departureKnown && view.current.assessment.stop === "confirmed" ? view.current.departure : undefined,
+            service: view.service, stop: view.current.assessment.stop });
+          await Dialog.alert({ title: "已更新实时活动", message: "锁屏显示本班预计到达及可用的发车倒计时；切换下一班请重新更新。" });
         })} />
       <Button title="结束锁屏倒计时" systemImage="stop.circle" disabled={busy} buttonStyle="borderless" action={() => run(endActivity)} />
       <Button title="预览小号组件" systemImage="square" disabled={busy} buttonStyle="borderless"
@@ -81,7 +99,8 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
           await Pasteboard.setString(core.parameter(p));
           await Dialog.alert({ title: "参数已复制", message: "长按桌面小组件 → 编辑小组件，将参数粘贴到参数栏。" });
         })} />
-      <Text font="caption">系统决定自动刷新时机；计时走动不代表重新获取了班次。不使用 Pro 后台任务或远程推送。</Text>
+      <Text font="caption">页面按上次查询的时间推算状态，不代表列车实况。5 分钟后标记旧数据，最长推算 30 分钟；已知班次用完后请刷新。图片时刻按周一至周五/周末匹配，未包含节假日及临时调图。</Text>
+      <Text font="caption">系统决定桌面重绘时机，状态可能延迟切换。锁屏仅展示选中班次，不自动换下一班。</Text>
     </List>
   </NavigationStack>;
 }
@@ -92,6 +111,6 @@ async function main() {
     await Navigation.present({ element: <Page initial={p} initialResult={await query(p)} /> });
   } catch (e) {
     await Dialog.alert({ title: "重庆轨道到站", message: String(e instanceof Error ? e.message : e) });
-  } finally { Script.exit(); }
+  } finally { stopPageClock(); Script.exit(); }
 }
 void main();

@@ -7,7 +7,7 @@ const KEY = "cqmetro.activity";
 export async function startOrUpdate(data: ActivityData) {
   if (!await LiveActivity.areActivitiesEnabled()) throw new Error("请先在系统设置中允许 Scripting 使用实时活动");
   const saved = Storage.get<SavedActivity>(KEY);
-  const options = { staleDate: Math.min(data.arrival, data.fetchedAt + 300000) };
+  const options = { staleDate: Math.min(data.departure ?? data.arrival, data.fetchedAt + 1800000) };
   if (saved) {
     const state = await LiveActivity.getActivityState(saved.id);
     if (state === "active" || state === "stale") {

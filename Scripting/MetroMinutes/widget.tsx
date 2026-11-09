@@ -1,20 +1,23 @@
 import { Button, HStack, Image, Script, Text, VStack, Widget } from "scripting";
 import core, { type Preferences, type Direction } from "./core";
-import { display, type Result } from "./data";
+import { display, nextTransition, type Result } from "./data";
 import { query, savedPreferences } from "./service";
 import { Countdown } from "./countdown";
 import { RefreshArrival } from "./app_intents";
 
-function Arrival({ p, result, dir, small, compact = false }: { p: Preferences; result: Result; dir: Direction; small: boolean; compact?: boolean }) {
+function Arrival({ p, result, dir, compact = false }: { p: Preferences; result: Result; dir: Direction; compact?: boolean }) {
   const d = display(p, result, Date.now(), dir);
-  return <VStack alignment="leading" spacing={3} frame={{ maxWidth: "infinity", alignment: "leading" }}>
-    <Text font={small ? 12 : 14} lineLimit={1} minScaleFactor={0.7}>{d.direction}</Text>
-    {d.trains[0] && result.snapshot
-      ? <Countdown arrival={d.trains[0].arrival} from={result.snapshot.fetchedAt} size={compact ? 32 : small ? 38 : 42} />
-      : <Text font={32}>--:--</Text>}
-    {!compact ? <Text font={10} lineLimit={1} minScaleFactor={0.8}>{d.status}</Text> : null}
-    {!small && !compact && d.trains.slice(1, 2).map(t => <Text font={12} lineLimit={1} minScaleFactor={0.7} key={t.arrival + t.destination}>
-      {`后续 ${core.clock(t.arrival)} · ${t.destination}`}
+  return <VStack alignment="leading" spacing={2} frame={{ maxWidth: "infinity", alignment: "leading" }}>
+    <Text font={compact ? 11 : 12} lineLimit={1} minScaleFactor={0.6}>{compact ? [d.direction, d.current?.assessment.kind].filter(Boolean).join(" · ") : d.direction}</Text>
+    {!compact && d.service ? <Text font={9} lineLimit={1} minScaleFactor={0.65}>{d.service}</Text> : null}
+    {d.targetTime !== null && result.snapshot
+      ? <Countdown key={d.targetTime} arrival={d.targetTime} from={result.snapshot.fetchedAt} size={compact ? 24 : 34} />
+      : !d.current ? <Text font={24}>--:--</Text> : null}
+    {!compact && d.timerLabel ? <Text font={9}>{d.timerLabel}</Text> : null}
+    <Text font={compact ? 8 : 9} lineLimit={1} minScaleFactor={0.55}>{compact ? [d.timerLabel, d.status].filter(Boolean).join(" · ") : d.status}</Text>
+    <Text font={compact ? 7 : 8} lineLimit={1} minScaleFactor={0.65}>{d.bounds}</Text>
+    {!compact && d.trains.slice(1, 3).map(t => <Text font={10} lineLimit={1} minScaleFactor={0.65} key={t.arrival + t.destination}>
+      {`${core.clock(t.arrival)} · ${t.assessment.destination} ${t.assessment.label}`}
     </Text>)}
   </VStack>;
 }
@@ -27,8 +30,6 @@ async function main() {
     const small = Widget.family === "systemSmall";
     const medium = Widget.family === "systemMedium";
     const open = Script.createRunURLScheme(Script.name, { parameter: core.parameter(p) });
-    const selected = <Arrival p={p} result={result} dir={p.direction} small={small} compact={medium} />;
-    const other = <Arrival p={p} result={result} dir={p.direction === "up" ? "down" : "up"} small={false} compact={medium} />;
     const refresh = <Button intent={RefreshArrival(core.parameter(p))} buttonStyle="plain"
       accessibilityLabel="刷新到站信息" accessibilityHint="重新查询当前站点和方向的班次">
       <HStack spacing={4} frame={{ minWidth: 44, minHeight: 44 }}>
@@ -36,47 +37,48 @@ async function main() {
         {!small ? <Text font={12}>刷新</Text> : null}
       </HStack>
     </Button>;
-    const next = d.trains[0]?.departure ?? Date.now() + 60000;
+    const both = <HStack alignment="top" spacing={12}>
+      <Arrival p={p} result={result} dir={p.direction} compact={medium} />
+      <Arrival p={p} result={result} dir={p.direction === "up" ? "down" : "up"} compact={medium} />
+    </HStack>;
     Widget.present(
       <VStack frame={{ maxWidth: "infinity", maxHeight: "infinity", alignment: "center" }}
         widgetBackground={p.dark ? "#171717" : "#FAFAFA"}
         foregroundStyle={p.dark ? "white" : "black"} widgetURL={open}>
-      <VStack alignment="leading" spacing={2} padding={14} frame={{ maxWidth: "infinity", alignment: "leading" }}>
-        <HStack spacing={5}>
-          <Text font={small ? 16 : 20} fontWeight="semibold" lineLimit={1} minScaleFactor={0.65}
-            frame={{ maxWidth: "infinity", alignment: "leading" }}>{d.station.stationName}</Text>
-          <Text font={10} lineLimit={1}>{d.station.lineName}</Text>
-          {medium ? refresh : null}
-        </HStack>
-        {small ? <VStack alignment="leading" spacing={2}>
-          <Text font={12} lineLimit={1} minScaleFactor={0.65}>{d.direction}</Text>
-          <HStack spacing={0}>
-            <VStack alignment="leading" frame={{ maxWidth: "infinity", alignment: "leading" }}>
-              {d.trains[0] && result.snapshot
-                ? <Countdown arrival={d.trains[0].arrival} from={result.snapshot.fetchedAt} size={34} />
-                : <Text font={30}>--:--</Text>}
-            </VStack>
-            {refresh}
+        <VStack alignment="leading" spacing={2} padding={14} frame={{ maxWidth: "infinity", alignment: "leading" }}>
+          <HStack spacing={5}>
+            <Text font={small ? 16 : 20} fontWeight="semibold" lineLimit={1} minScaleFactor={0.65}
+              frame={{ maxWidth: "infinity", alignment: "leading" }}>{d.station.stationName}</Text>
+            <Text font={10} lineLimit={1}>{d.station.lineName}</Text>
+            {!small ? refresh : null}
           </HStack>
-          <Text font={10} lineLimit={1} minScaleFactor={0.8}>{d.status}</Text>
-        </VStack> : medium ? <HStack alignment="top" spacing={18}>{selected}{other}</HStack>
-          : <VStack alignment="leading" spacing={16}>{selected}{other}</VStack>}
-        <HStack spacing={0}>
-          <Text font={9} lineLimit={1} minScaleFactor={0.7} frame={{ maxWidth: "infinity", alignment: "leading" }}>{`查 ${d.queried}${medium ? " · " + d.status : ""}`}</Text>
-          {!small && !medium ? refresh : null}
-        </HStack>
-      </VStack>
+          {small ? <VStack alignment="leading" spacing={1}>
+            <Text font={11} lineLimit={1} minScaleFactor={0.6}>{[d.direction, d.current?.assessment.kind].filter(Boolean).join(" · ")}</Text>
+            <HStack spacing={0}>
+              <VStack alignment="leading" frame={{ maxWidth: "infinity", alignment: "leading" }}>
+                {d.targetTime !== null && result.snapshot
+                  ? <Countdown key={d.targetTime} arrival={d.targetTime} from={result.snapshot.fetchedAt} size={30} />
+                  : !d.current ? <Text font={26}>--:--</Text> : null}
+              </VStack>
+              {refresh}
+            </HStack>
+            <Text font={9} lineLimit={1} minScaleFactor={0.6}>{d.status}</Text>
+            {d.timerLabel ? <Text font={8}>{d.timerLabel}</Text> : null}
+            <Text font={8} lineLimit={1} minScaleFactor={0.65}>{d.bounds}</Text>
+          </VStack> : both}
+          <Text font={8} lineLimit={1} minScaleFactor={0.55}>{`查 ${d.queried} · ${d.source || "请刷新"}`}</Text>
+        </VStack>
       </VStack>,
-      { policy: "after", date: new Date(Math.max(Date.now() + 20000, Math.min(next, Date.now() + 60000))) },
+      { policy: "after", date: new Date(nextTransition(p, result, Date.now())) },
     );
   } catch (error) {
     const p = savedPreferences();
     Widget.present(<VStack frame={{ maxWidth: "infinity", maxHeight: "infinity", alignment: "center" }}
       widgetBackground={p.dark ? "#171717" : "#FAFAFA"} foregroundStyle={p.dark ? "white" : "black"}>
       <VStack alignment="leading" spacing={8} padding={14}>
-      <Text font="headline">重庆轨道到站</Text>
-      <Text font="caption">{String(error instanceof Error ? error.message : error)}</Text>
-      <Text font="caption">打开脚本重新选择站点</Text>
+        <Text font="headline">重庆轨道到站</Text>
+        <Text font="caption">{String(error instanceof Error ? error.message : error)}</Text>
+        <Text font="caption">打开脚本重新选择站点</Text>
       </VStack>
     </VStack>, { policy: "after", date: new Date(Date.now() + 60000) });
   }

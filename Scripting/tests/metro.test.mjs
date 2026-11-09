@@ -2,13 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { constants, generateKeyPairSync, privateDecrypt, randomBytes } from 'node:crypto';
-import ts from 'typescript';
+import { loadModule } from './modules.mjs';
 import core, { STATIONS } from '../MetroMinutes/core.js';
 
-const source = ts.transpileModule(readFileSync(new URL('../MetroMinutes/data.ts', import.meta.url), 'utf8'), {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext },
-}).outputText.replace('"./core"', JSON.stringify(new URL('../MetroMinutes/core.js', import.meta.url).href));
-const { load, display } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+const { load, display } = await loadModule('data.ts');
 const fixture = name => JSON.parse(readFileSync(new URL('../../Tests/Fixtures/' + name + '.json', import.meta.url)));
 const erlang = fixture('erlang');
 const now = Date.parse(erlang.receivedAt);
@@ -62,7 +59,7 @@ test('official Toutang response retains all three Minan Avenue arrivals, includi
   const d = display(toutangPreferences, { snapshot: s, error: null }, s.up[0].departure + 1);
   assert.equal(d.direction, '往民安大道');
   assert.equal(core.clock(d.trains[0].arrival, true), '10:00:25');
-  assert.equal(d.status, '预计到站');
+  assert.equal(d.status, '预计到达 · 停靠待确认');
 });
 
 test('a direction containing only flag 2 records remains visible without leaking another line', () => {
@@ -74,8 +71,8 @@ test('a direction containing only flag 2 records remains visible without leaking
   assert.equal(s.down.length, 0);
   const d = display(toutangPreferences, { snapshot: s, error: null }, toutangTime);
   assert.equal(d.direction, '往民安大道');
-  assert.equal(d.status, '预计到站');
-  assert.equal(display(toutangPreferences, { snapshot: s, error: null }, toutangTime + 300000).trains.length, 0);
+  assert.equal(d.status, '预计到达 · 停靠待确认');
+  assert.equal(display(toutangPreferences, { snapshot: s, error: null }, toutangTime + 1800000).trains.length, 0);
 });
 
 test('overlapping flag variants deduplicate while different destinations remain separate', () => {
@@ -95,11 +92,12 @@ test('real fixtures select the correct line, including an empty direction', () =
   assert.equal(s.up.length, 3); assert.equal(s.down.length, 3);
   assert.equal(core.clock(s.up[0].arrival), '14:44');
 });
-test('failed refresh retains timestamp, expiry hides trains, station mismatches cannot leak', () => {
+test('failed refresh retains timestamp, inference expires, station mismatches cannot leak', () => {
   const good = display(p, { snapshot, error: null }, now);
   assert.ok(good.trains.length);
-  assert.match(display(p, { snapshot, error: 'offline' }, now).status, /缓存/);
-  assert.equal(display(p, { snapshot, error: null }, now + 300000).trains.length, 0);
+  assert.match(display(p, { snapshot, error: 'offline' }, now).source, /刷新失败/);
+  assert.match(display(p, { snapshot, error: null }, now + 300000).source, /旧数据/);
+  assert.equal(display(p, { snapshot, error: null }, now + 1800000).trains.length, 0);
   assert.equal(display({ ...p, stationID: '5033' }, { snapshot, error: null }, now).trains.length, 0);
 });
 function memory(request) {

@@ -15,8 +15,8 @@ globalThis.Storage = {
 };
 function handle(id) {
   return {
-    start: async data => { active.set(id, 'active'); if (ambiguous) active.set('other-new', 'active'); calls.push(['start', id, data]); return true; },
-    update: async data => { calls.push(['update', id, data]); },
+    start: async (data, options) => { active.set(id, 'active'); if (ambiguous) active.set('other-new', 'active'); calls.push(['start', id, data, options]); return true; },
+    update: async (data, options) => { calls.push(['update', id, data, options]); },
     end: async () => { active.delete(id); calls.push(['end', id]); },
   };
 }
@@ -82,4 +82,19 @@ test('ending an activity with a missing recovered handle clears its saved refere
   await endActivity();
   assert.equal(store.has('cqmetro.activity'), false);
   assert.equal(active.has('unrelated'), true);
+});
+
+test('activity supports departure timing but never outlives the inference horizon', async () => {
+  reset();
+  const departure = data.arrival + 60000;
+  await startOrUpdate({ ...data, departure, stop: 'confirmed', service: '快速 · 按图停靠' });
+  assert.equal(calls.at(-1)[3].staleDate, departure);
+  await startOrUpdate({ ...data, departure: data.fetchedAt + 3600000 });
+  assert.equal(calls.at(-1)[3].staleDate, data.fetchedAt + 1800000);
+});
+
+test('activity without a confirmed departure only has an arrival deadline', async () => {
+  reset(); await startOrUpdate({ ...data, stop: 'unknown', service: '疑似快速 · 停靠待确认' });
+  assert.equal(calls.at(-1)[3].staleDate, data.arrival);
+  assert.equal(calls.at(-1)[2].departure, undefined);
 });
