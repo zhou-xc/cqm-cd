@@ -56,7 +56,9 @@ const MetroCore = (() => {
     if (!Array.isArray(values)) throw new Error("到站列表格式发生变化");
     const seen = new Set();
     return values.flatMap(t => {
-      if (!t || Number(t.skip_stop_flag) === 2) return [];
+      // The official H5 displays skip_stop_flag=2 records too. Its public API has
+      // no documented mapping that lets us treat this flag as "does not stop".
+      if (!t) return [];
       const arrival = parseDate(t.arrival_time);
       if (arrival === null) return [];
       const departure = Math.max(parseDate(t.departure_time) ?? arrival, arrival);

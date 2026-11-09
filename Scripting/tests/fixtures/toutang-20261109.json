@@ -1,0 +1,184 @@
+{
+  "receivedAt": "2026-11-09T01:51:08.681Z",
+  "success": true,
+  "errcode": "0000",
+  "errmsg": "成功",
+  "result": {
+    "lines": [
+      {
+        "line_no": "04",
+        "line_name": "4号线",
+        "line_theme_color": "#ED8E00",
+        "up": [
+          {
+            "arrival_time_min": 3,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "民安大道",
+            "arrival_time": "20261109095438",
+            "departure_time": "20261109095528",
+            "skip_stop_flag": 1,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0401",
+            "terminal_station_name": "民安大道"
+          },
+          {
+            "arrival_time_min": 9,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "民安大道",
+            "arrival_time": "20261109100025",
+            "departure_time": "20261109100115",
+            "skip_stop_flag": 2,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0401",
+            "terminal_station_name": "民安大道"
+          },
+          {
+            "arrival_time_min": 13,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "民安大道",
+            "arrival_time": "20261109100417",
+            "departure_time": "20261109100507",
+            "skip_stop_flag": 1,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0401",
+            "terminal_station_name": "民安大道"
+          }
+        ],
+        "down": [
+          {
+            "arrival_time_min": 7,
+            "train_running": 2,
+            "near_arrive": 0,
+            "destination": "黄岭",
+            "arrival_time": "20261109095823",
+            "departure_time": "20261109095913",
+            "skip_stop_flag": 1,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0424",
+            "terminal_station_name": "黄岭"
+          },
+          {
+            "arrival_time_min": 11,
+            "train_running": 2,
+            "near_arrive": 0,
+            "destination": "唐家沱",
+            "arrival_time": "20261109100230",
+            "departure_time": "20261109100320",
+            "skip_stop_flag": 1,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0409",
+            "terminal_station_name": "唐家沱"
+          },
+          {
+            "arrival_time_min": 18,
+            "train_running": 2,
+            "near_arrive": 0,
+            "destination": "黄岭",
+            "arrival_time": "20261109100903",
+            "departure_time": "20261109100953",
+            "skip_stop_flag": 1,
+            "station_no": "0403",
+            "station_name": "头塘",
+            "terminal_station_no": "0424",
+            "terminal_station_name": "黄岭"
+          }
+        ]
+      },
+      {
+        "line_no": "09",
+        "line_name": "9号线",
+        "line_theme_color": "#8d2342",
+        "up": [
+          {
+            "arrival_time_min": 4,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "高滩岩",
+            "arrival_time": "20261109095537",
+            "departure_time": "20261109095628",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0902",
+            "terminal_station_name": "高滩岩"
+          },
+          {
+            "arrival_time_min": 15,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "高滩岩",
+            "arrival_time": "20261109100625",
+            "departure_time": "20261109100705",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0902",
+            "terminal_station_name": "高滩岩"
+          },
+          {
+            "arrival_time_min": 18,
+            "train_running": 1,
+            "near_arrive": 0,
+            "destination": "高滩岩",
+            "arrival_time": "20261109100922",
+            "departure_time": "20261109101007",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0902",
+            "terminal_station_name": "高滩岩"
+          }
+        ],
+        "down": [
+          {
+            "arrival_time_min": 0,
+            "train_running": 2,
+            "near_arrive": 1,
+            "destination": "兴科大道",
+            "arrival_time": "20261109095119",
+            "departure_time": "20261109095211",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0926",
+            "terminal_station_name": "兴科大道"
+          },
+          {
+            "arrival_time_min": 6,
+            "train_running": 2,
+            "near_arrive": 0,
+            "destination": "花石沟",
+            "arrival_time": "20261109095746",
+            "departure_time": "20261109095831",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0931",
+            "terminal_station_name": "花石沟"
+          },
+          {
+            "arrival_time_min": 14,
+            "train_running": 2,
+            "near_arrive": 0,
+            "destination": "兴科大道",
+            "arrival_time": "20261109100512",
+            "departure_time": "20261109100557",
+            "skip_stop_flag": 1,
+            "station_no": "0918",
+            "station_name": "头塘",
+            "terminal_station_no": "0926",
+            "terminal_station_name": "兴科大道"
+          }
+        ]
+      }
+    ]
+  }
+}

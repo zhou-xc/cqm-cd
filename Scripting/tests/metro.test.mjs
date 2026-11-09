@@ -41,11 +41,49 @@ test('station catalog, interchange parameters and Shanghai time are validated', 
   assert.equal(core.parseDate('20260230080000'), null);
   assert.equal(core.parseDate('20261107080000'), Date.parse('2026-11-07T00:00:00Z'));
 });
-test('normalization rejects departed, malformed, duplicate and non-stopping trains', () => {
+test('normalization rejects departed, malformed and duplicate trains', () => {
   const t = { arrival_time: '20261106144146', departure_time: '20261106144216', destination: '上桥' };
   const trains = core.normalize([t, t, { ...t, skip_stop_flag: 2 }, { ...t, arrival_time: 'bad' }], now);
   assert.equal(trains.length, 1);
   assert.equal(core.normalize([t], Date.parse('2026-11-06T06:42:16Z')).length, 0);
+});
+
+const toutangFlagged = JSON.parse(readFileSync(new URL('./fixtures/toutang-20261109.json', import.meta.url)));
+const toutangTime = Date.parse(toutangFlagged.receivedAt);
+const toutangPreferences = core.resolveParameter('头塘|4号线|up|timer|dark', p);
+
+test('official Toutang response retains all three Minan Avenue arrivals, including flag 2', () => {
+  const s = core.snapshot(toutangFlagged.result, toutangPreferences, toutangTime);
+  assert.deepEqual(s.up.map(t => core.clock(t.arrival, true)), ['09:54:38', '10:00:25', '10:04:17']);
+  assert.ok(s.up.every(t => t.destination === '民安大道'));
+  assert.equal(s.down.length, 3);
+  assert.ok(s.down.every(t => ['黄岭', '唐家沱'].includes(t.destination)));
+  // After the first train leaves, the previously dropped record must become next.
+  const d = display(toutangPreferences, { snapshot: s, error: null }, s.up[0].departure + 1);
+  assert.equal(d.direction, '往民安大道');
+  assert.equal(core.clock(d.trains[0].arrival, true), '10:00:25');
+  assert.equal(d.status, '预计到站');
+});
+
+test('a direction containing only flag 2 records remains visible without leaking another line', () => {
+  const result = structuredClone(toutangFlagged.result);
+  result.lines[0].up = result.lines[0].up.filter(t => t.skip_stop_flag === 2);
+  result.lines[0].down = [];
+  const s = core.snapshot(result, toutangPreferences, toutangTime);
+  assert.equal(s.up.length, 1);
+  assert.equal(s.down.length, 0);
+  const d = display(toutangPreferences, { snapshot: s, error: null }, toutangTime);
+  assert.equal(d.direction, '往民安大道');
+  assert.equal(d.status, '预计到站');
+  assert.equal(display(toutangPreferences, { snapshot: s, error: null }, toutangTime + 300000).trains.length, 0);
+});
+
+test('overlapping flag variants deduplicate while different destinations remain separate', () => {
+  const t = toutangFlagged.result.lines[0].up[1];
+  const trains = core.normalize([t, { ...t, skip_stop_flag: '2' }, { ...t, skip_stop_flag: 1 },
+    { ...t, destination: '另一终点' }, { ...t, arrival_time: 'bad' }], toutangTime);
+  assert.deepEqual(trains.map(t => t.destination), ['民安大道', '另一终点']);
+  assert.equal(core.normalize([t], core.parseDate(t.departure_time)).length, 0);
 });
 test('real fixtures select the correct line, including an empty direction', () => {
   assert.equal(snapshot.up.length, 3); assert.equal(snapshot.down.length, 0);

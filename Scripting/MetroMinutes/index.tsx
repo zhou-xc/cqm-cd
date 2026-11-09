@@ -76,6 +76,11 @@ function Page({ initial, initialResult }: { initial: Preferences; initialResult:
       <Link url={core.officialURL(p)}>打开官方到站查询</Link>
       <Text font="caption">添加桌面 Scripting 小组件后选择 MetroMinutes。参数留空使用这里的选择；多个组件可分别填写下方参数。点击组件主体打开设置，点击刷新图标重新查询。</Text>
       <Text font="caption">{core.parameter(p)}</Text>
+      <Button title="复制小组件参数" systemImage="doc.on.doc" disabled={busy} buttonStyle="borderless"
+        action={() => run(async () => {
+          await Pasteboard.setString(core.parameter(p));
+          await Dialog.alert({ title: "参数已复制", message: "长按桌面小组件 → 编辑小组件，将参数粘贴到参数栏。" });
+        })} />
       <Text font="caption">系统决定自动刷新时机；计时走动不代表重新获取了班次。不使用 Pro 后台任务或远程推送。</Text>
     </List>
   </NavigationStack>;
